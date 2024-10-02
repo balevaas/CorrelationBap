@@ -1,0 +1,36 @@
+﻿<Window x:Class="BaseView.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BaseView"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.3*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        
+        <Label VerticalAlignment="Top" Margin="10,0,10,10" Content="Выбор города:"/>
+        <ComboBox VerticalAlignment="Top" Margin="10,25,10,10"
+                  Name="CityCB" ItemsSource="{Binding Path=StationName}"
+                  SelectedItem="{Binding Path=SelectStationID}"
+                  SelectionChanged="CityCB_SelectionChanged"/>
+
+        <Label VerticalAlignment="Top" Margin="10,55,10,10" Content="Выбор ПНЗ:"/>
+        <ComboBox VerticalAlignment="Top" Margin="10,80,10,10"
+                  Name="PointCB" ItemsSource="{Binding Path=Points}"
+                  SelectedItem="{Binding Path=SelectPoint}"
+                  SelectionChanged="PointCB_SelectionChanged"/>
+
+        <Label VerticalAlignment="Top" Margin="10,115,10,10" Content="Выбор года:"/>
+        <ComboBox VerticalAlignment="Top" Margin="10,140,10,10"
+                  Name="YearCB" ItemsSource="{Binding Path=Year,StringFormat=Y}"
+                  SelectedItem="{Binding Path=SelectRowYear}"
+                  SelectionChanged="YearCB_SelectionChanged"/>
+
+        <Button VerticalAlignment="Top" Margin="10,175,10,10" Content="Выполнить анализ"/>
+
+    </Grid>
+</Window>
