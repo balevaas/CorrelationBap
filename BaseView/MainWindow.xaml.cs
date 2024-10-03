@@ -42,5 +42,10 @@ namespace BaseView
         {
 
         }
+
+        private void AnalizBtn_Click(object sender, RoutedEventArgs e)
+        {
+            StationTB.Text = string.Join(" ", _context.NameS, _context.PointID);
+        }
     }
 }

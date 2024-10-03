@@ -30,7 +30,10 @@
                   SelectedItem="{Binding Path=SelectRowYear}"
                   SelectionChanged="YearCB_SelectionChanged"/>
 
-        <Button VerticalAlignment="Top" Margin="10,175,10,10" Content="Выполнить анализ"/>
+        <Button VerticalAlignment="Top" Margin="10,175,10,10" Content="Выполнить анализ"
+                Name="AnalizBtn" Click="AnalizBtn_Click"/>
+
+        <TextBlock x:Name="StationTB" Grid.Column="1" Margin="10" VerticalAlignment="Top" FontSize="20"/>
 
     </Grid>
 </Window>
