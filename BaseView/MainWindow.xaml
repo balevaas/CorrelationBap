@@ -5,34 +5,40 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BaseView"
         mc:Ignorable="d"
-        Title="MainWindow" Height="550" Width="800" 
+        Title="MainWindow" Height="600" Width="850" 
         WindowStartupLocation="CenterScreen">
    
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="185*"/>
-            <ColumnDefinition Width="612*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="0.3*"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel VerticalAlignment="Top" Grid.Column="0">
-            <Label Margin="10,0,10,0" Content="Выбор города:"/>
+        <ToolBarPanel VerticalAlignment="Top" Grid.Column="0">
+            <Label Margin="10,0,10,0" Content="Выберите город:"/>
             <ComboBox Margin="5,0,5,0"
                Name="CityCB" ItemsSource="{Binding Path=StationName}"
                SelectedItem="{Binding Path=SelectStationID}"
                SelectionChanged="CityCB_SelectionChanged"/>
             
-            <Label Margin="10,5,10,0" Content="Выбор ПНЗ:"/>
+            <Label Name="LabelPoint" Margin="10,5,10,0" Content="Выберите ПНЗА:"/>
             <ComboBox Margin="5,0,5,0"
               Name="PointCB" ItemsSource="{Binding Path=Points}"
               SelectedItem="{Binding Path=SelectPoint}"
               SelectionChanged="PointCB_SelectionChanged"/>
-            <Label Margin="10,5,10,0" Content="Выбор года:"/>
-            <ComboBox Margin="5,0,5,0"
-              Name="YearCB" ItemsSource="{Binding Path=Year,StringFormat=Y}"
-              SelectedItem="{Binding Path=SelectRowYear}"
-              SelectionChanged="YearCB_SelectionChanged"/>
-            <ComboBox x:Name="MonthCB" Margin="10,50,0,0">
+
+            <Label Name="LabelYear" Margin="10,5,10,0" Content="Выберите год:"/>
+            <ComboBox Margin="5,0,5,0" Name="YearCB" SelectionChanged="YearCB_SelectionChanged">
+                <ComboBoxItem>
+                    <CheckBox Content="2021"></CheckBox>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <CheckBox Content="2022"></CheckBox>
+                </ComboBoxItem>
+            </ComboBox>
+
+            <Label Name="LabelMonth" Margin="10,5,10,0" Content="Выберите месяц(а):"/>
+            <ComboBox x:Name="MonthCB" Margin="5,0,5,0">
                 <ComboBoxItem>
                     <CheckBox Content="Январь"></CheckBox>
                 </ComboBoxItem>
@@ -70,12 +76,22 @@
                     <CheckBox Content="Декабрь"></CheckBox>
                 </ComboBoxItem>
             </ComboBox>
-        </StackPanel>    
+            <Grid>
+                <Label Name="LabelInterval" Margin="5,5,5,0" Content="Либо временной промежуток:"/>
+                <RadioButton Name="WinterRB" Margin="10,30,0,0" HorizontalAlignment="Left" Content="Зима"/>
+                <RadioButton Name="SpringRB" Margin="0,30,0,0" HorizontalAlignment="Center" Content="Весна"/>
+                <RadioButton Name="SummerRB" Margin="110,30,10,0" HorizontalAlignment="Right" Content="Лето"/>
+                <RadioButton Name="AutumnRB" Margin="35,60,0,0" HorizontalAlignment="Left" Content="Осень"/>
+                <RadioButton Name="YearRB" Margin="0,60,10,0" HorizontalAlignment="Right" Content="Весь год"/>
+            </Grid>            
+        </ToolBarPanel>  
+        
+          
        
       
 
-       <Button VerticalAlignment="Top" Margin="10,175,10,0" Content="Выполнить анализ"
-               Name="AnalizBtn" Click="AnalizBtn_Click"/>
+       <!--<Button VerticalAlignment="Top" Margin="10,175,10,0" Content="Выполнить анализ"
+               Name="AnalizBtn" Click="AnalizBtn_Click"/>-->
 
         <Grid Grid.Column="1" x:Name="UserControlPanel">
             

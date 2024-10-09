@@ -35,7 +35,7 @@ namespace BaseView
         private void PointCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is not ComboBox box || box.SelectedItem == null) return;
-            _context.SelectPoint?.Execute((int)PointCB.SelectedItem);
+            _context.SelectPoint?.Execute((int)PointCB.SelectedItem);            
         }
 
         private void YearCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -48,6 +48,11 @@ namespace BaseView
             UserControlPanel.Children.Clear();
             var analysUC = new AnalysUserControl();
             UserControlPanel.Children.Add(analysUC);
+        }
+
+        private void MonthCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

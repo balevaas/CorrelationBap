@@ -42,6 +42,7 @@ namespace BaseViewModel
         }
 
         public List<int> Year { get; private set; } 
+        public List<string> Month { get; private set; }
         public Command<int> SelectPoint;
         public ObservableCollection<int> IDPoint { get; private set; }
         public int PointID;
@@ -49,8 +50,10 @@ namespace BaseViewModel
         {
             IDPoint = new ObservableCollection<int>(_model.Points.Where(p => p.ID == id).Select(p => p.ID));
             PointID = IDPoint.ElementAt(0);            
-            Year = new List<int> { 2021, 2022 };
-            OnPropertyChanged(nameof(Year));
+            //Year = new List<int> { 2021, 2022 };
+            //Month = new List<string> { "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" };
+            //OnPropertyChanged(nameof(Year));
+            //OnPropertyChanged(nameof(Month));
         }
     }
 }
