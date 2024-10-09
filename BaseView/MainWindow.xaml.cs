@@ -45,7 +45,9 @@ namespace BaseView
 
         private void AnalizBtn_Click(object sender, RoutedEventArgs e)
         {
-            StationTB.Text = string.Join(" ", _context.NameS, _context.PointID);
+            UserControlPanel.Children.Clear();
+            var analysUC = new AnalysUserControl();
+            UserControlPanel.Children.Add(analysUC);
         }
     }
 }

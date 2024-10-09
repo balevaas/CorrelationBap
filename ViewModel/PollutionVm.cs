@@ -48,8 +48,7 @@ namespace BaseViewModel
         private void SelectPoints(int id)
         {
             IDPoint = new ObservableCollection<int>(_model.Points.Where(p => p.ID == id).Select(p => p.ID));
-            PointID = IDPoint.ElementAt(0);
-            
+            PointID = IDPoint.ElementAt(0);            
             Year = new List<int> { 2021, 2022 };
             OnPropertyChanged(nameof(Year));
         }

@@ -5,36 +5,82 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BaseView"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="550" Width="800" 
+        WindowStartupLocation="CenterScreen">
+   
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.3*"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="185*"/>
+            <ColumnDefinition Width="612*"/>
+            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
+
+        <StackPanel VerticalAlignment="Top" Grid.Column="0">
+            <Label Margin="10,0,10,0" Content="Выбор города:"/>
+            <ComboBox Margin="5,0,5,0"
+               Name="CityCB" ItemsSource="{Binding Path=StationName}"
+               SelectedItem="{Binding Path=SelectStationID}"
+               SelectionChanged="CityCB_SelectionChanged"/>
+            
+            <Label Margin="10,5,10,0" Content="Выбор ПНЗ:"/>
+            <ComboBox Margin="5,0,5,0"
+              Name="PointCB" ItemsSource="{Binding Path=Points}"
+              SelectedItem="{Binding Path=SelectPoint}"
+              SelectionChanged="PointCB_SelectionChanged"/>
+            <Label Margin="10,5,10,0" Content="Выбор года:"/>
+            <ComboBox Margin="5,0,5,0"
+              Name="YearCB" ItemsSource="{Binding Path=Year,StringFormat=Y}"
+              SelectedItem="{Binding Path=SelectRowYear}"
+              SelectionChanged="YearCB_SelectionChanged"/>
+            <ComboBox x:Name="MonthCB" Margin="10,50,0,0">
+                <ComboBoxItem>
+                    <CheckBox Content="Январь"></CheckBox>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <CheckBox Content="Февраль"></CheckBox>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <CheckBox Content="Март"></CheckBox>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <CheckBox Content="Апрель"></CheckBox>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <CheckBox Content="Май"></CheckBox>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <CheckBox Content="Июнь"></CheckBox>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <CheckBox Content="Июль"></CheckBox>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <CheckBox Content="Август"></CheckBox>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <CheckBox Content="Сентябрь"></CheckBox>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <CheckBox Content="Октябрь"></CheckBox>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <CheckBox Content="Ноябрь"></CheckBox>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <CheckBox Content="Декабрь"></CheckBox>
+                </ComboBoxItem>
+            </ComboBox>
+        </StackPanel>    
+       
+      
+
+       <Button VerticalAlignment="Top" Margin="10,175,10,0" Content="Выполнить анализ"
+               Name="AnalizBtn" Click="AnalizBtn_Click"/>
+
+        <Grid Grid.Column="1" x:Name="UserControlPanel">
+            
+        </Grid>
         
-        <Label VerticalAlignment="Top" Margin="10,0,10,10" Content="Выбор города:"/>
-        <ComboBox VerticalAlignment="Top" Margin="10,25,10,10"
-                  Name="CityCB" ItemsSource="{Binding Path=StationName}"
-                  SelectedItem="{Binding Path=SelectStationID}"
-                  SelectionChanged="CityCB_SelectionChanged"/>
-
-        <Label VerticalAlignment="Top" Margin="10,55,10,10" Content="Выбор ПНЗ:"/>
-        <ComboBox VerticalAlignment="Top" Margin="10,80,10,10"
-                  Name="PointCB" ItemsSource="{Binding Path=Points}"
-                  SelectedItem="{Binding Path=SelectPoint}"
-                  SelectionChanged="PointCB_SelectionChanged"/>
-
-        <Label VerticalAlignment="Top" Margin="10,115,10,10" Content="Выбор года:"/>
-        <ComboBox VerticalAlignment="Top" Margin="10,140,10,10"
-                  Name="YearCB" ItemsSource="{Binding Path=Year,StringFormat=Y}"
-                  SelectedItem="{Binding Path=SelectRowYear}"
-                  SelectionChanged="YearCB_SelectionChanged"/>
-
-        <Button VerticalAlignment="Top" Margin="10,175,10,10" Content="Выполнить анализ"
-                Name="AnalizBtn" Click="AnalizBtn_Click"/>
-
-        <TextBlock x:Name="StationTB" Grid.Column="1" Margin="10" VerticalAlignment="Top" FontSize="20"/>
-        
-
+    
     </Grid>
 </Window>
