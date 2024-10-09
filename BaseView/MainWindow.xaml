@@ -34,6 +34,7 @@
                 Name="AnalizBtn" Click="AnalizBtn_Click"/>
 
         <TextBlock x:Name="StationTB" Grid.Column="1" Margin="10" VerticalAlignment="Top" FontSize="20"/>
+        
 
     </Grid>
 </Window>

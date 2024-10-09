@@ -1,13 +1,7 @@
-﻿using BaseData.Entities;
-using BaseData.EntityFramework.Context;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Collections.Immutable;
+﻿using BaseData.EntityFramework.Context;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using ViewModelBase;
 using ViewModelBase.Commands.QuickCommand;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BaseViewModel
 {
@@ -55,6 +49,7 @@ namespace BaseViewModel
         {
             IDPoint = new ObservableCollection<int>(_model.Points.Where(p => p.ID == id).Select(p => p.ID));
             PointID = IDPoint.ElementAt(0);
+            
             Year = new List<int> { 2021, 2022 };
             OnPropertyChanged(nameof(Year));
         }
