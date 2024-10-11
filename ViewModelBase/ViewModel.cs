@@ -5,6 +5,7 @@ namespace ViewModelBase
 {
     public abstract class ViewModel : INotifyPropertyChanged
     {
+        
         /// <summary>
         /// Событие, возникающее при изменении ВСЕХ свойств, ВЫБРАННЫХ разработчиком.
         /// </summary>

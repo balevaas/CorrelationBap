@@ -28,70 +28,52 @@
               SelectionChanged="PointCB_SelectionChanged"/>
 
             <Label Name="LabelYear" Margin="10,5,10,0" Content="Выберите год:"/>
-            <ComboBox Margin="5,0,5,0" Name="YearCB" SelectionChanged="YearCB_SelectionChanged">
-                <ComboBoxItem>
-                    <CheckBox Content="2021"></CheckBox>
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    <CheckBox Content="2022"></CheckBox>
-                </ComboBoxItem>
+            <ComboBox IsEditable="False" Margin="5,0,5,0">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Year}" IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+                <ComboBox.ItemsSource>
+                    <Binding Path="Years" />
+                </ComboBox.ItemsSource>
             </ComboBox>
 
             <Label Name="LabelMonth" Margin="10,5,10,0" Content="Выберите месяц(а):"/>
-            <ComboBox x:Name="MonthCB" Margin="5,0,5,0">
-                <ComboBoxItem>
-                    <CheckBox Content="Январь"></CheckBox>
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    <CheckBox Content="Февраль"></CheckBox>
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    <CheckBox Content="Март"></CheckBox>
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    <CheckBox Content="Апрель"></CheckBox>
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    <CheckBox Content="Май"></CheckBox>
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    <CheckBox Content="Июнь"></CheckBox>
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    <CheckBox Content="Июль"></CheckBox>
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    <CheckBox Content="Август"></CheckBox>
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    <CheckBox Content="Сентябрь"></CheckBox>
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    <CheckBox Content="Октябрь"></CheckBox>
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    <CheckBox Content="Ноябрь"></CheckBox>
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    <CheckBox Content="Декабрь"></CheckBox>
-                </ComboBoxItem>
+            <ComboBox IsEditable="False" Margin="5,0,5,0">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+                <ComboBox.ItemsSource>
+                    <Binding Path="Months" />
+                </ComboBox.ItemsSource>
             </ComboBox>
-            <Grid>
-                <Label Name="LabelInterval" Margin="5,5,5,0" Content="Либо временной промежуток:"/>
-                <RadioButton Name="WinterRB" Margin="10,30,0,0" HorizontalAlignment="Left" Content="Зима"/>
-                <RadioButton Name="SpringRB" Margin="0,30,0,0" HorizontalAlignment="Center" Content="Весна"/>
-                <RadioButton Name="SummerRB" Margin="110,30,10,0" HorizontalAlignment="Right" Content="Лето"/>
-                <RadioButton Name="AutumnRB" Margin="35,60,0,0" HorizontalAlignment="Left" Content="Осень"/>
-                <RadioButton Name="YearRB" Margin="0,60,10,0" HorizontalAlignment="Right" Content="Весь год"/>
-            </Grid>            
+            
+            <Label Name="LabelInterval" Margin="5,5,5,0" Content="Либо временной промежуток:"/>
+            <ItemsControl ItemsSource="{Binding Seasons}" Margin="5,0,5,0">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <RadioButton Margin="5" Content="{Binding Name}" IsChecked="{Binding SelectedSeason, 
+                            RelativeSource={RelativeSource AncestorType=Window}, UpdateSourceTrigger=PropertyChanged}"
+                         Checked="RadioButton_Checked"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <Button Margin="10,10,10,0" Content="Выполнить анализ"
+               Name="AnalizBtn" Command="{Binding Test}"/>
+
+            
         </ToolBarPanel>  
         
           
        
       
-
-       <!--<Button VerticalAlignment="Top" Margin="10,175,10,0" Content="Выполнить анализ"
-               Name="AnalizBtn" Click="AnalizBtn_Click"/>-->
 
         <Grid Grid.Column="1" x:Name="UserControlPanel">
             
