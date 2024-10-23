@@ -6,20 +6,8 @@ using ViewModelBase.Commands.QuickCommand;
 
 namespace BaseViewModel
 {
-    public class Season
+   public class PollutionViewModel : ViewModel
     {
-        public string Name { get; set; }
-        public List<int> MonthsNumber { get; set; }
-        public Season(string name, List<int> monthsNumber)
-        {
-            Name = name;
-            MonthsNumber = monthsNumber;
-        }
-    }
-
-    public class PollutionViewModel : ViewModel
-    {
-        DateForPollutionViewModel datesForPol = new DateForPollutionViewModel();
         private Season _selectedSeason;
         public ObservableCollection<Season> Seasons { get; set; }
         public Season SelectedSeason
@@ -39,20 +27,20 @@ namespace BaseViewModel
         private readonly DataContext _model;
 
         public ObservableCollection<string> StationName { get; private set; }
-        public static ObservableCollection<MonthItem> Months { get; private set; }
-        public static ObservableCollection<YearItem> Years { get; private set; }
+        //public static ObservableCollection<MonthItem> Months { get; private set; }
+        //public static ObservableCollection<YearItem> Years { get; private set; }
 
         public string NameS;
 
         public PollutionViewModel(DataContext model)
         {
             _model = model;
-            StationName = new ObservableCollection<string>(model.Stations.Select(s => s.Name));
-            SelectStationID = new Command<string>(SelectStation);
-            SelectPoint = new Command<int>(SelectPoints);
+            //StationName = new ObservableCollection<string>(model.Stations.Select(s => s.Name));
+            //SelectStationID = new Command<string>(SelectStation);
+            //SelectPoint = new Command<int>(SelectPoints);
 
-            Months = DateForPollutionViewModel.InsertMonth(Months);
-            Years = DateForPollutionViewModel.InsertYear(Years);
+            //Months = DateForPollutionViewModel.InsertMonth(Months);
+            //Years = DateForPollutionViewModel.InsertYear(Years);
 
             Test = new AsyncCommand(TestData);
 
@@ -65,7 +53,6 @@ namespace BaseViewModel
                 new("Весь год", [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
             ];
         }
-
         public ObservableCollection<int> StationID { get; private set; }
         public Command<string> SelectStationID { get; set; }
         public List<int> Points { get; private set; }
@@ -107,12 +94,13 @@ namespace BaseViewModel
 
         public ObservableCollection<int> PollutionsPost { get; private set; }
         public ObservableCollection<decimal> Pollutions { get; private set; }
+
         private void SelectDate()
         {
-            NumberMonths = new ObservableCollection<int>(Months.Where(m => m.IsSelected).Select(m => m.NumberMonth));
+           // NumberMonths = new ObservableCollection<int>(Months.Where(m => m.IsSelected).Select(m => m.NumberMonth));
             NumberMonth = [.. NumberMonths];
 
-            NumberYears = new ObservableCollection<int>(Years.Where(m => m.IsSelected).Select(m => m.Year));
+            //NumberYears = new ObservableCollection<int>(Years.Where(m => m.IsSelected).Select(m => m.Year));
             NumberYear = [.. NumberYears];
 
             if (NumberYear[0] == 2021 && NumberYear[1] == 2022)
@@ -164,5 +152,7 @@ namespace BaseViewModel
         {
             SelectDate();
         }
+
+
     }
 }

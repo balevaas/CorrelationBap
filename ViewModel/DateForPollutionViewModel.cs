@@ -37,6 +37,20 @@ namespace BaseViewModel
             }
         }
     }
+
+    public class Season 
+    {
+        public string Name { get; set; }
+        public List<int> MonthsNumber { get; set; }
+        public Season(string name, List<int> monthsNumber)
+        {
+            Name = name;
+            MonthsNumber = monthsNumber;
+        }
+
+    }
+
+
     public class DateForPollutionViewModel : ViewModel
     {
         public static ObservableCollection<MonthItem>? Months { get; private set; }
@@ -68,5 +82,7 @@ namespace BaseViewModel
                 new() {Year = 2022}
             ];
         }
+
+
     }
 }
