@@ -12,20 +12,18 @@
             <ColumnDefinition Width="0.3*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <local:SelectDataUserControl Grid.Column="0"/>
-
-        <!--<ToolBarPanel VerticalAlignment="Top" Grid.Column="0">
+        <ToolBarPanel VerticalAlignment="Top" Grid.Column="0">
             <Label Margin="10,0,10,0" Content="Выберите город:"/>
             <ComboBox Margin="5,0,5,0"
-               Name="CityCB" ItemsSource="{Binding Path=StationName}"
-               SelectedItem="{Binding Path=SelectStationID}"
-               SelectionChanged="CityCB_SelectionChanged"/>
+                Name="CityCB" ItemsSource="{Binding Path=StationName}"
+                SelectedItem="{Binding Path=SelectStationID}"
+                SelectionChanged="CityCB_SelectionChanged"/>
 
             <Label Name="LabelPoint" Margin="10,5,10,0" Content="Выберите ПНЗА:"/>
             <ComboBox Margin="5,0,5,0"
-              Name="PointCB" ItemsSource="{Binding Path=Points}"
-              SelectedItem="{Binding Path=SelectPoint}"
-              SelectionChanged="PointCB_SelectionChanged"/>
+               Name="PointCB" ItemsSource="{Binding Path=Points}"
+               SelectedItem="{Binding Path=SelectPoint}"
+               SelectionChanged="PointCB_SelectionChanged"/>
 
             <Label Name="LabelYear" Margin="10,5,10,0" Content="Выберите год:"/>
             <ComboBox IsEditable="False" Margin="5,0,5,0">
@@ -46,12 +44,12 @@
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+                            <CheckBox Content="{Binding Month}" IsChecked="{Binding IsSelected, Mode=TwoWay}" />
                         </StackPanel>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
                 <ComboBox.ItemsSource>
-                    <Binding Path="Months" />
+                    <Binding Path="testmonth" />
                 </ComboBox.ItemsSource>
             </ComboBox>
 
@@ -60,25 +58,13 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <RadioButton Margin="5" Content="{Binding Name}" IsChecked="{Binding SelectedSeason, 
-                            RelativeSource={RelativeSource AncestorType=Window}, UpdateSourceTrigger=PropertyChanged}"
-                         Checked="RadioButton_Checked"/>
+                     RelativeSource={RelativeSource AncestorType=Window}, UpdateSourceTrigger=PropertyChanged}"
+                     Checked="RadioButton_Checked"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
             <Button Margin="10,10,10,0" Content="Выполнить анализ"
-               Name="AnalizBtn" Command="{Binding Test}"/>
-        </ToolBarPanel>-->
-
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.1*"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            
-            <WrapPanel Margin="5" Grid.Row="0">
-                <Label Content="Город:" FontSize="18" Visibility="Hidden"/>
-                <TextBlock x:Name="CityNameTB" FontSize="18"/>
-            </WrapPanel>
-        </Grid>
+                Name="AnalizBtn" Command="{Binding Test}"/>
+        </ToolBarPanel>
     </Grid>
 </Window>

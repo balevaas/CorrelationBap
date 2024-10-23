@@ -23,20 +23,20 @@ namespace BaseViewModel
             }
         }
     }
-    public class YearItem : ViewModel
-    {
-        private bool isSelected;
-        public int Year { get; set; }
-        public bool IsSelected
-        {
-            get => isSelected;
-            set
-            {
-                isSelected = value;
-                OnPropertyChanged(nameof(IsSelected));
-            }
-        }
-    }
+    //public class YearItem : ViewModel
+    //{
+    //    private bool isSelected;
+    //    public int Year { get; set; }
+    //    public bool IsSelected
+    //    {
+    //        get => isSelected;
+    //        set
+    //        {
+    //            isSelected = value;
+    //            OnPropertyChanged(nameof(IsSelected));
+    //        }
+    //    }
+    //}
 
     public class Season 
     {
@@ -54,7 +54,7 @@ namespace BaseViewModel
     public class DateForPollutionViewModel : ViewModel
     {
         public static ObservableCollection<MonthItem>? Months { get; private set; }
-        public static ObservableCollection<YearItem>? Years { get; private set; }
+        //public static ObservableCollection<YearItem>? Years { get; private set; }
 
         public static ObservableCollection<MonthItem> InsertMonth(ObservableCollection<MonthItem> months)
         {
@@ -74,14 +74,14 @@ namespace BaseViewModel
                 new() { Name = "Декабрь", NumberMonth = 12 }
             ];
         }
-        public static ObservableCollection<YearItem> InsertYear(ObservableCollection<YearItem> years)
-        {
-            return years =
-            [
-                new() {Year = 2021},
-                new() {Year = 2022}
-            ];
-        }
+        //public static ObservableCollection<YearItem> InsertYear(ObservableCollection<YearItem> years)
+        //{
+        //    return years =
+        //    [
+        //        new() {Year = 2021},
+        //        new() {Year = 2022}
+        //    ];
+        //}
 
 
     }
