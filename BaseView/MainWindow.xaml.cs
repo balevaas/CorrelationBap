@@ -1,4 +1,5 @@
 ﻿using BaseViewModel;
+using BaseViewModel.DatasDTO;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 using System.Windows;
@@ -18,14 +19,14 @@ namespace BaseView
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly SelectDataViewModel _context;
+        private readonly SelectPointYearsViewModel _context;
         public MainWindow()
         {
             InitializeComponent();
-            _context = new SelectDataViewModel((Application.Current as App)?.Context!);
+            _context = new SelectPointYearsViewModel((Application.Current as App)?.Context!);
             DataContext = _context;
+            _context.FirstValue = "Hello";
         }
-
         private void CityCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is not ComboBox box || box.SelectedItem == null) return;
@@ -35,16 +36,17 @@ namespace BaseView
         private void PointCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is not ComboBox box || box.SelectedItem == null) return;
-            _context.SelectPoint?.Execute((int)PointCB.SelectedItem);
+            _context.SelectPointID?.Execute((int)PointCB.SelectedItem);
         }
 
-        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            if (sender is RadioButton radioButton && radioButton.DataContext is Season selectedSeason)
-            {
-                var viewModel = DataContext as SelectDataViewModel;
-                viewModel.SelectedSeason = selectedSeason;
-            }
+            _context.UpdateSelection();
+        }
+
+        private void CheckBox_Checked_1(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

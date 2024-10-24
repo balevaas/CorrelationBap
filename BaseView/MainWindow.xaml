@@ -4,67 +4,69 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BaseView"
+        xmlns:controls="clr-namespace:BaseView.Controls" 
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="850" 
         WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.3*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <ToolBarPanel VerticalAlignment="Top" Grid.Column="0">
-            <Label Margin="10,0,10,0" Content="Выберите город:"/>
-            <ComboBox Margin="5,0,5,0"
-                Name="CityCB" ItemsSource="{Binding Path=StationName}"
-                SelectedItem="{Binding Path=SelectStationID}"
-                SelectionChanged="CityCB_SelectionChanged"/>
+        <Grid Grid.Column="0">
+            <StackPanel>
+                <Label Margin="10,0,10,0" Content="Выберите город:"/>
+                <ComboBox Margin="5,0,5,0"
+            Name="CityCB" ItemsSource="{Binding Path=StationName}"
+            SelectedItem="{Binding Path=SelectStationID}"
+            SelectionChanged="CityCB_SelectionChanged"/>
 
-            <Label Name="LabelPoint" Margin="10,5,10,0" Content="Выберите ПНЗА:"/>
-            <ComboBox Margin="5,0,5,0"
-               Name="PointCB" ItemsSource="{Binding Path=Points}"
-               SelectedItem="{Binding Path=SelectPoint}"
-               SelectionChanged="PointCB_SelectionChanged"/>
+                <Label Name="LabelPoint" Margin="10,0,10,0" Content="Выберите ПНЗА:"/>
+                <ComboBox Margin="5,0,5,0"
+           Name="PointCB" ItemsSource="{Binding Path=Points}"
+           SelectedItem="{Binding Path=SelectPointID}"
+           SelectionChanged="PointCB_SelectionChanged"/>
 
-            <Label Name="LabelYear" Margin="10,5,10,0" Content="Выберите год:"/>
-            <ComboBox IsEditable="False" Margin="5,0,5,0">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <CheckBox Content="{Binding Year}" IsChecked="{Binding IsSelected, Mode=TwoWay}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-                <ComboBox.ItemsSource>
-                    <Binding Path="Years" />
-                </ComboBox.ItemsSource>
-            </ComboBox>
+                <Label Name="LabelYear" Margin="10,0,10,0" Content="Выберите год(а):"/>
+                <ComboBox Margin="5,0,5,0" ItemsSource="{Binding Years}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Content="{Binding Year}" IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                              Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ComboBox>
 
-            <Label Name="LabelMonth" Margin="10,5,10,0" Content="Выберите месяц(а):"/>
-            <ComboBox IsEditable="False" Margin="5,0,5,0">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <CheckBox Content="{Binding Month}" IsChecked="{Binding IsSelected, Mode=TwoWay}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-                <ComboBox.ItemsSource>
-                    <Binding Path="Months" />
-                </ComboBox.ItemsSource>
-            </ComboBox>
+                <Label Name="LabelMonth" Margin="10,0,10,0" Content="Выберите месяц(ы):"/>
+                <ComboBox Margin="5,0,5,0" x:Name="MonthCB" ItemsSource="{Binding Months}" 
+                  IsEnabled="{Binding IsMonthComboboxEnabled}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Content="{Binding Month}" IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                              Checked="CheckBox_Checked_1" Unchecked="CheckBox_Checked_1"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ComboBox>
 
-            <Label Name="LabelInterval" Margin="5,5,5,0" Content="Либо временной промежуток:"/>
-            <ItemsControl ItemsSource="{Binding Seasons}" Margin="5,0,5,0">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <RadioButton Margin="5" Content="{Binding Name}" IsChecked="{Binding SelectedSeason, 
-                     RelativeSource={RelativeSource AncestorType=Window}, UpdateSourceTrigger=PropertyChanged}"
-                     Checked="RadioButton_Checked"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-            <Button Margin="10,10,10,0" Content="Выполнить анализ"
-                Name="AnalizBtn" Command="{Binding Test}"/>
-        </ToolBarPanel>
+                <StackPanel Margin="10,0,10,0" x:Name="SeasonsPanel" Visibility="{Binding IsSeasonRadioButtonEnabled, Converter= {StaticResource BooleanToVisibilityConverter}}">
+                    <Label Content="Выберите сезон:"/>
+                    <ItemsControl ItemsSource="{Binding Seasons}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <RadioButton Content="{Binding Name}" GroupName="SeasonsGroup" IsChecked="{Binding IsSelected, Mode=TwoWay}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </StackPanel>
+            <Button VerticalAlignment="Bottom" Margin="10" Content="Выполнить анализ" Command="{Binding SelectPollutionCommand}"/>
+        </Grid>
+
+        <controls:AnalysisUserControl 
+            Grid.Column="1" Margin="100"
+            FirstReceivedValue="{Binding FirstValue}"/>
     </Grid>
 </Window>
