@@ -49,7 +49,7 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
                 <ComboBox.ItemsSource>
-                    <Binding Path="testmonth" />
+                    <Binding Path="Months" />
                 </ComboBox.ItemsSource>
             </ComboBox>
 

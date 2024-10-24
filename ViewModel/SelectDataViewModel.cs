@@ -84,10 +84,11 @@ namespace BaseViewModel
             }
             for(int i = 0; i < MonthInt.Count; i++)
             {
-                Months.Add(new MonthItem { Number = MonthInt.ElementAt(i), Month = monthNames[MonthInt.ElementAt(i)], IsSelected = false });
+                Months.Add(new MonthItem { Number = MonthInt.ElementAt(i), Month = monthNames[i], IsSelected = false });
             }
             PointID = IDPoint.ElementAt(0);
             OnPropertyChanged(nameof(Years));
+            OnPropertyChanged(nameof(Months));
         }
 
         public class MonthItem
