@@ -9,9 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+    <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BaseData\BaseData.csproj" />
     <ProjectReference Include="..\ConnectionConfig\ConnectionConfig.csproj" />
-    <ProjectReference Include="..\ViewModel\BaseViewModel.csproj" />
   </ItemGroup>
 
 </Project>

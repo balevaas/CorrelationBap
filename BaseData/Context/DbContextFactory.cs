@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace BaseData.EntityFramework.Context
+namespace BaseData.Context
 {
     public class DbContextFactory
     {

@@ -1,7 +1,7 @@
 ﻿using BaseData.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace BaseData.EntityFramework.Context
+namespace BaseData.Context
 {
     public sealed class DataContext : DbContext
     {
@@ -11,6 +11,7 @@ namespace BaseData.EntityFramework.Context
         public DbSet<Point> Points { get; set; } = null!;
         public DbSet<Station> Stations { get; set; } = null!;
         public DbSet<WeatherData> WeatherDatas { get; set; } = null!;
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,7 +34,7 @@ namespace BaseData.EntityFramework.Context
                 new Point { ID = 27, StationID = 30715 },
                 new Point { ID = 41, StationID = 30715 },
 
-                new Point { ID = 48, StationID = 30818 },                
+                new Point { ID = 48, StationID = 30818 },
 
                 new Point { ID = 2, StationID = 30309 },
                 new Point { ID = 8, StationID = 30309 },

@@ -1,16 +1,6 @@
-﻿using BaseViewModel;
-using BaseViewModel.DatasDTO;
-using Microsoft.EntityFrameworkCore;
-using System.Text;
+﻿using BaseView.ViewModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace BaseView
 {
@@ -19,13 +9,14 @@ namespace BaseView
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly SelectPointYearsViewModel _context;
+        private readonly SelectViewModel _context;
+        
         public MainWindow()
         {
             InitializeComponent();
-            _context = new SelectPointYearsViewModel((Application.Current as App)?.Context!);
+            _context = new SelectViewModel((Application.Current as App)?.Context!);
             DataContext = _context;
-            _context.FirstValue = "Hello";
+
         }
         private void CityCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

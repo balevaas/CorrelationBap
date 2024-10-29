@@ -1,6 +1,19 @@
-﻿using BaseViewModel;
+﻿using BaseView.ViewModel;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
 namespace BaseView.Controls
 {
@@ -9,22 +22,15 @@ namespace BaseView.Controls
     /// </summary>
     public partial class AnalysisUserControl : UserControl
     {
-        private readonly AnalysisViewModel _context;
+        //private readonly AnalysisViewModel _context;
+
         public AnalysisUserControl()
         {
             InitializeComponent();
-            _context = new AnalysisViewModel((Application.Current as App)?.Context!);
-            DataContext = _context;
-            //test.Text = _context.CityName;
-        }
-
-        public static readonly DependencyProperty FirstReceivedValueProperty =
-        DependencyProperty.Register("FirstReceivedValue", typeof(string), typeof(AnalysisUserControl), new PropertyMetadata(string.Empty));
-
-        public string FirstReceivedValue
-        {
-            get => (string)GetValue(FirstReceivedValueProperty);
-            set => SetValue(FirstReceivedValueProperty, value);
+            //_context = new AnalysisViewModel((Application.Current as App)?.Context!);
+            //DataContext = _context;
+            //string txt = label.ContentStringFormat;
+            //Debug.WriteLine(txt);
         }
     }
 }

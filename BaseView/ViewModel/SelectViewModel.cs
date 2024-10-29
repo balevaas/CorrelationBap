@@ -1,44 +1,43 @@
 ﻿using BaseData.Context;
-using BaseViewModel.DatasDTO;
+using MvvmHelpers;
+using MvvmHelpers.Commands;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Design;
-using System.Diagnostics;
-using ViewModelBase;
-using ViewModelBase.Commands.AsyncCommand;
-using ViewModelBase.Commands.QuickCommand;
+using BaseView.DatasDTO;
+using CommunityToolkit.Mvvm.Input;
 
-namespace BaseViewModel
+namespace BaseView.ViewModel
 {
-    public class SelectPointYearsViewModel : ViewModel
+    public class SelectViewModel : BaseViewModel
     {
-        public AnalysisItem analysisItem;
         private readonly DataContext _model;
+        private string nameCity;
+        private int numberPoint;
+        private DateTime[] datesOneYear, datesSeasons;
+        private decimal[] pollution;
+        //public SaveDatas saveDatas = new SaveDatas();
         public ObservableCollection<string> StationName { get; private set; }
         public int[] NumberYear { get; private set; }
         public int[] NumberMonth { get; private set; }
-        public DateTime[] dateOneYear, dateSeason;
-        public SelectPointYearsViewModel(DataContext model)
+        public SelectViewModel(DataContext model)
         {
-            analysisItem = new AnalysisItem();
             _model = model;
             StationName = new ObservableCollection<string>(model.Stations.Select(s => s.Name));
             SelectStationID = new Command<string>(SelectStation);
             SelectPointID = new Command<int>(SelectPoint);
-            SelectPollutionCommand = new AsyncCommand(SelectPollution);
+            SelectPollutionCommand = new RelayCommand(SelectPollution);
         }
 
         #region Выбор города, загрузка точек
         public Command<string> SelectStationID { get; set; }
         public ObservableCollection<int> StationID { get; private set; }
-        private string cityName;
         public List<int> Points { get; private set; }
         private void SelectStation(string name)
         {
             StationID = new ObservableCollection<int>(_model.Stations.Where(p => p.Name == name).Select(p => p.ID));
             int id = StationID.ElementAt(0);
-            cityName = name;            
+            nameCity = name;
             Points = GetIDByStationID(id);
-            OnPropertyChanged(nameof(Points));            
+            OnPropertyChanged(nameof(Points));
         }
         public List<int> GetIDByStationID(int station)
         {
@@ -67,6 +66,7 @@ namespace BaseViewModel
             Seasons = new ObservableCollection<SeasonItem>();
             IDPoint = new ObservableCollection<int>(_model.Points.Where(p => p.ID == pointID).Select(p => p.ID));
             PointID = IDPoint.ElementAt(0);
+            numberPoint = PointID;
             foreach (var year in GetYears(PointID))
             {
                 Years.Add(year);
@@ -148,23 +148,25 @@ namespace BaseViewModel
             return items;
         }
         #endregion
-        
+
         #region Даты в пределах одного года
         private void OneYearPollut(DateTime[] date)
         {
             NumberMonth = new ObservableCollection<int>(Months.Where(m => m.IsSelected).Select(m => m.Number)).ToArray();
             date = new DateTime[NumberMonth.Length];
-            for (int i = 0; i <= date.Length; i++) date[i] = new DateTime(NumberYear[0], NumberMonth[i], 01); 
+            datesOneYear = new DateTime[NumberMonth.Length];
+            for (int i = 0; i < date.Length; i++) date[i] = new DateTime(NumberYear[0], NumberMonth[i], 01);
+            datesOneYear = date;
             PollutionMas(date);
         }
         #endregion
 
         #region Даты за сезон
         public string[] SelectSeason { get; private set; }
-        private void SeasonYearPollut(DateTime[] date) 
+        private void SeasonYearPollut(DateTime[] date)
         {
             SelectSeason = new ObservableCollection<string>(Seasons.Where(m => m.IsSelected).Select(m => m.Name)).ToArray();
-            switch(SelectSeason[0])
+            switch (SelectSeason[0])
             {
                 case "Зима":
                     NumberMonth = [1, 2, 12];
@@ -191,73 +193,79 @@ namespace BaseViewModel
         private void InsertingDateSeason(int[] mas)
         {
             List<DateTime> list = new List<DateTime>();
-            foreach(var year in NumberYear)
+            foreach (var year in NumberYear)
             {
-                foreach(var month in mas)
+                foreach (var month in mas)
                 {
                     list.Add(new DateTime(year, month, 01));
                 }
             }
-            DateTime[] dateSeason = list.ToArray();
-            PollutionMas(dateSeason);
+            datesSeasons = list.ToArray();
+            PollutionMas(datesSeasons);
         }
         #endregion
 
         #region Загрузка загрязнений за выбранный период
-        public decimal[] Pollutions { get; private set; }
         public decimal[] PollutionMas(DateTime[] date)
         {
-            Pollutions = new ObservableCollection<decimal>(_model.Pollutions.Where(m => date.Any(d => d.Date == m.Date)).Where(m => m.PointID == PointID).Select(m => m.Concentration)).ToArray();
-            return Pollutions;
+            pollution = new ObservableCollection<decimal>(_model.Pollutions.Where(m => date.Any(d => d.Date == m.Date)).Where(m => m.PointID == PointID).Select(m => m.Concentration)).ToArray();
+            return pollution;
         }
         #endregion
 
         #region Команда на кнопку
-        public AsyncCommand SelectPollutionCommand { get; }
-        private async Task SelectPollution(CancellationToken _)
+        public RelayCommand SelectPollutionCommand { get; }
+        private void SelectPollution()
         {
             SelectDate();
-            ShowUserControl();
         }
 
-        public string CityName;
+        public string Informations { get; set; }
         private void SelectDate()
         {
             NumberYear = new ObservableCollection<int>(Years.Where(m => m.IsSelected).Select(m => m.Year)).ToArray();
-            CityName = cityName;
-            OnPropertyChanged(nameof(CityName));
-            if(NumberYear.Length == 1)
+            if (NumberYear.Length == 1)
             {
-                OneYearPollut(dateOneYear);
+                OneYearPollut(datesOneYear);
+                //saves = new SaveDatas(nameCity, numberPoint, datesOneYear, pollution);
+                //SaveDatas = new List<SaveDatas> {
+                //    new SaveDatas { NameCity = nameCity, NumberPoint = numberPoint, Dates = datesOneYear, Pollutions = pollution }
+                //};
+                CityName = nameCity;
+                Informations = string.Format($"Город: {nameCity}, ПНЗА №{numberPoint}");
+                OnPropertyChanged(nameof(Informations));
             }
-            else if(NumberYear.Length > 1) 
+            else if (NumberYear.Length > 1)
             {
-                SeasonYearPollut(dateSeason);
-            }    
+                SeasonYearPollut(datesSeasons);
+                //SaveDatas = new List<SaveDatas> {
+                //    new SaveDatas { NameCity = nameCity, NumberPoint = numberPoint, Dates = datesSeasons, Pollutions = pollution }
+                //};
+                Informations = string.Format($"Город: {nameCity}, ПНЗА №{numberPoint}");
+                OnPropertyChanged(nameof(Informations));
+            }
         }
+        //public List<SaveDatas> SaveDatas { get; private set; }
+        //public SaveDatas saves;
 
-        private void ShowUserControl()
+        private readonly SaveDatas _saves;
+        public SelectViewModel(SaveDatas saves)
         {
-            IsControlActive = true;
+            _saves = saves;
         }
-
-        #endregion
-
-        #region Активатор для AnalysisUserControl
-        private bool _isControlActive;
-        public bool IsControlActive
+        public string CityName
         {
-            get => _isControlActive;
+            get => nameCity;
             set
             {
-                _isControlActive = value;
-                OnPropertyChanged(nameof(IsControlActive));
+                if (nameCity != value)
+                {
+                    nameCity = value;
+                    _saves.CityName = value;
+                    OnPropertyChanged();
+                }
             }
         }
-
-        
-
-        
         #endregion
     }
 }

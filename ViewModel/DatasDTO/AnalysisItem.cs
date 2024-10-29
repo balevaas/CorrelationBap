@@ -8,6 +8,9 @@ namespace BaseViewModel.DatasDTO
 {
     public class AnalysisItem
     {
-        public static string CityName { get; set; }
+        public string CityName { get; set; }
+        public int NumberPoint { get; set; }
+        public DateTime[] dateTimes { get; set; }
+        public decimal[] Pollutions { get; set; }
     }
 }

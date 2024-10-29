@@ -1,4 +1,6 @@
-﻿using BaseData.EntityFramework.Context;
+﻿using BaseData.Context;
+using BaseView.DatasDTO;
+using BaseView.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using System.Windows;
 using static ConnectionConfig.Strings;
@@ -26,6 +28,11 @@ namespace BaseView
             builder.UseSqlite(GetConnectionStrings(Sqlite));
 
             this._context = new DbContextFactory(builder.Options);
+
+            var saveServise = new SaveDatas();
+            var selectVM = new SelectViewModel(saveServise);
+            var analysisVM = new AnalysisViewModel(saveServise);
+
         }
     }
 
