@@ -16,15 +16,27 @@ namespace BaseView.ViewModel
     {
         private readonly DataContext _model;
 
-        //private SaveDatas _save;
-        private string _name;
-        public string CityName
+        private SaveDatas _save;
+        private SelectViewModel _selectViewModel;
+        //private string _name;
+        //public string CityName
+        //{
+        //    get => _name;
+        //    set
+        //    {
+        //        _name = value;
+        //        OnPropertyChanged(nameof(CityName));
+        //    }
+        //}
+
+        private DateTime[] dates;
+        public DateTime[] Dates
         {
-            get => _name;
+            get => dates;
             set
             {
-                _name = value;
-                OnPropertyChanged(nameof(CityName));
+                dates = value;
+                OnPropertyChanged(nameof(dates));
             }
         }
         private ObservableCollection<SaveDatas> select;
@@ -39,8 +51,13 @@ namespace BaseView.ViewModel
         }
         public AnalysisViewModel()
         {
-            //CityName = SelectDatas.First().CityName;
 
+        }
+
+        public AnalysisViewModel(DataContext model)
+        {
+            _model = model;
+                       
         }
 
         public void SaveDatas(ObservableCollection<SaveDatas> datas)

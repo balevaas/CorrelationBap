@@ -20,7 +20,7 @@ namespace BaseView.ViewModel
         public SelectViewModel(DataContext model)
         {
             _model = model;
-            IsUserControl = false;
+            //IsUserControl = false;
             StationName = new ObservableCollection<string>(model.Stations.Select(s => s.Name));
             SelectStationID = new Command<string>(SelectStation);
             SelectPointID = new Command<int>(SelectPoint);
@@ -128,16 +128,16 @@ namespace BaseView.ViewModel
                 OnPropertyChanged(nameof(IsSeasonRadioButtonEnabled));
             }
         }
-        private bool _isUserControl;
-        public bool IsUserControl
-        {
-            get => _isUserControl;
-            set
-            {
-                _isUserControl = value;
-                OnPropertyChanged(nameof(IsUserControl));
-            }
-        }
+        //private bool _isUserControl;
+        //public bool IsUserControl
+        //{
+        //    get => _isUserControl;
+        //    set
+        //    {
+        //        _isUserControl = value;
+        //        OnPropertyChanged(nameof(IsUserControl));
+        //    }
+        //}
         private AnalysisViewModel analysis;
         //public void UpdateUserControl()
         //{
@@ -233,10 +233,10 @@ namespace BaseView.ViewModel
 
         #region Команда на кнопку
         public RelayCommand SelectPollutionCommand { get; }
-        private void SelectPollution()
+        public void SelectPollution()
         {
             SelectDate();            
-            UpdateUserControl();
+            //UpdateUserControl();
         }
 
         public string Informations { get; set; }
@@ -258,9 +258,9 @@ namespace BaseView.ViewModel
             if (NumberYear.Length == 1)
             {
                 OneYearPollut(Dates);
-                //UpdateData();
-                //Informations = string.Format($"Город: {CityName}, ПНЗА №{PointNumber}");
-                //OnPropertyChanged(nameof(Informations));
+                UpdateData();
+                Informations = string.Format($"Город: {CityName}, ПНЗА №{PointNumber}");
+                OnPropertyChanged(nameof(Informations));
             }
             else if (NumberYear.Length > 1)
             {
@@ -325,8 +325,10 @@ namespace BaseView.ViewModel
             };
             Saves.Add(items);
             Analysis = new AnalysisViewModel();
-            Analysis.SaveDatas(Saves);  
+            Analysis.SaveDatas(Saves);
         }
+
+        //public SelectViewModel() { }
         #endregion
     }
 }

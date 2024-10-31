@@ -11,16 +11,6 @@
             <RowDefinition Height="0.1*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Label Content="fdgdfgdf" FontSize="18" Grid.Row="0" HorizontalContentAlignment="Center"/>
-        <!--<ItemsControl ItemsSource="{Binding SelectDatas}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding CityName, Mode=TwoWay}" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>-->
-        <TextBlock FontSize="30" Text="{Binding CityName, Mode=TwoWay}"/>
-
-
+        
     </Grid>
 </UserControl>

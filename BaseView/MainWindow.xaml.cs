@@ -16,8 +16,7 @@ namespace BaseView
         {
             InitializeComponent();
             _context = new SelectViewModel((Application.Current as App)?.Context!);
-            DataContext = _context;
-            anal.Visibility = Visibility.Hidden;
+            DataContext = _context;            
         }
         private void CityCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -38,7 +37,14 @@ namespace BaseView
 
         private void CheckBox_Checked_1(object sender, RoutedEventArgs e)
         {
+            
+        }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            _context.SelectPollution();
+            anal.Visibility = Visibility.Visible;
+            
         }
     }
 }

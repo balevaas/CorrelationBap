@@ -27,8 +27,10 @@ namespace BaseView.Controls
         public AnalysisUserControl()
         {
             InitializeComponent();
+            _context = new AnalysisViewModel((Application.Current as App)?.Context!);
+            DataContext = _context;
             //DataContext = _context;
-            analysis.DataContext = _context;
+            //analysis.DataContext = _context;
             //analysis.Visibility = Visibility.Hidden;
             //Debug.WriteLine(this.DataContext);
             //analysis.UpdateLayout();
