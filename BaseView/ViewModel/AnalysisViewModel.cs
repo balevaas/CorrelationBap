@@ -27,18 +27,31 @@ namespace BaseView.ViewModel
                 OnPropertyChanged(nameof(CityName));
             }
         }
-        public ObservableCollection<SaveDatas> SelectDatas { get; set; }
-        public AnalysisViewModel(DataContext model)
+        private ObservableCollection<SaveDatas> select;
+        public ObservableCollection<SaveDatas> SelectDatas
         {
-            _model = model;
+            get => select;
+            set
+            {
+                select = value;
+                OnPropertyChanged(nameof(SelectDatas));
+            }
         }
-        public AnalysisViewModel() { }
+        public AnalysisViewModel()
+        {
+            //CityName = SelectDatas.First().CityName;
+
+        }
 
         public void SaveDatas(ObservableCollection<SaveDatas> datas)
         {
-            CityName = datas.First().CityName;
+            SelectDatas = datas;
+            OnPropertyChanged(nameof(SelectDatas));
+            CityName = SelectDatas.First().CityName;
+            OnPropertyChanged(nameof(CityName));
+            //CityName = datas.First().CityName;
             //OnPropertyChanged(nameof(CityName));
-            Debug.WriteLine(CityName);
+            //Debug.WriteLine(CityName);
         }
     }
 }

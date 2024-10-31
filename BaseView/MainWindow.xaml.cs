@@ -17,6 +17,7 @@ namespace BaseView
             InitializeComponent();
             _context = new SelectViewModel((Application.Current as App)?.Context!);
             DataContext = _context;
+            anal.Visibility = Visibility.Hidden;
         }
         private void CityCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

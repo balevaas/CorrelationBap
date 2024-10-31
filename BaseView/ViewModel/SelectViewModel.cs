@@ -20,6 +20,7 @@ namespace BaseView.ViewModel
         public SelectViewModel(DataContext model)
         {
             _model = model;
+            IsUserControl = false;
             StationName = new ObservableCollection<string>(model.Stations.Select(s => s.Name));
             SelectStationID = new Command<string>(SelectStation);
             SelectPointID = new Command<int>(SelectPoint);
@@ -138,13 +139,14 @@ namespace BaseView.ViewModel
             }
         }
         private AnalysisViewModel analysis;
-        public void UpdateUserControl()
-        {
-            int selectedYears = Years.Count(y => y.IsSelected);
-            IsUserControl = selectedYears >= 1;
-            //analysis = new AnalysisViewModel();
+        //public void UpdateUserControl()
+        //{
+        //    int selectedYears = Years.Count(y => y.IsSelected);
+        //    IsUserControl = selectedYears >= 1;
+        //    UpdateData();
+        //    //analysis = new AnalysisViewModel();
             
-        }
+        //}
         public void UpdateSelection()
         {
             int selectedCount = Years.Count(y => y.IsSelected);
@@ -233,8 +235,7 @@ namespace BaseView.ViewModel
         public RelayCommand SelectPollutionCommand { get; }
         private void SelectPollution()
         {
-            SelectDate();
-            
+            SelectDate();            
             UpdateUserControl();
         }
 
@@ -257,7 +258,7 @@ namespace BaseView.ViewModel
             if (NumberYear.Length == 1)
             {
                 OneYearPollut(Dates);
-                UpdateData();
+                //UpdateData();
                 //Informations = string.Format($"Город: {CityName}, ПНЗА №{PointNumber}");
                 //OnPropertyChanged(nameof(Informations));
             }

@@ -71,7 +71,7 @@
             --><!--<Label Content="{Binding CityName}" FontSize="25"/>--><!--
             <Label Content="{Binding IdPoint}" FontSize="25"/>
         </UserControl>-->
-        <controls:AnalysisUserControl x:Name="anal" Grid.Column="1"
-                 Visibility="{Binding IsUserControl, Converter= {StaticResource BooleanToVisibilityConverter}}"/>
+        <controls:AnalysisUserControl x:Name="anal" Grid.Column="1" 
+                 ;Visibility="{Binding IsUserControl, Mode=TwoWay, Converter= {StaticResource BooleanToVisibilityConverter}}"/>
     </Grid>
 </Window>

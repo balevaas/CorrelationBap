@@ -2,6 +2,7 @@
 using BaseView.DatasDTO;
 using BaseView.ViewModel;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using System.Windows;
 using static ConnectionConfig.Strings;
 
@@ -24,6 +25,7 @@ namespace BaseView
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+            //PresentationTraceSources.DataBindingSource.Switch.Level = SourceLevels.Information;
             var builder = new DbContextOptionsBuilder<DataContext>();
             builder.UseSqlite(GetConnectionStrings(Sqlite));
 
