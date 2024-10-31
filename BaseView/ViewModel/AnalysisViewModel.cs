@@ -3,6 +3,8 @@ using BaseView.DatasDTO;
 using MvvmHelpers;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -13,25 +15,30 @@ namespace BaseView.ViewModel
     public class AnalysisViewModel : BaseViewModel
     {
         private readonly DataContext _model;
-        //public decimal[] Pollutions { get; set; }
-        //public SaveDatas saveDatas = new SaveDatas();
 
-        private readonly SaveDatas _saves;
-        public AnalysisViewModel(SaveDatas saves)
+        //private SaveDatas _save;
+        private string _name;
+        public string CityName
         {
-            _saves = saves;
-            //for(int i = 0; i < saveDatas.Pollutions.Length; i++)
-            //{
-            //    Debug.WriteLine(saveDatas.Pollutions[i]);
-            //}
-            Debug.WriteLine(CityName);
+            get => _name;
+            set
+            {
+                _name = value;
+                OnPropertyChanged(nameof(CityName));
+            }
         }
-
-        public string CityName => _saves.CityName;
-
-        public void UpdateCityName()
+        public ObservableCollection<SaveDatas> SelectDatas { get; set; }
+        public AnalysisViewModel(DataContext model)
         {
-            OnPropertyChanged(nameof(CityName));
+            _model = model;
+        }
+        public AnalysisViewModel() { }
+
+        public void SaveDatas(ObservableCollection<SaveDatas> datas)
+        {
+            CityName = datas.First().CityName;
+            //OnPropertyChanged(nameof(CityName));
+            Debug.WriteLine(CityName);
         }
     }
 }

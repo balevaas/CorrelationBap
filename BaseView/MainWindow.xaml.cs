@@ -1,4 +1,5 @@
-﻿using BaseView.ViewModel;
+﻿using BaseView.Controls;
+using BaseView.ViewModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -16,7 +17,6 @@ namespace BaseView
             InitializeComponent();
             _context = new SelectViewModel((Application.Current as App)?.Context!);
             DataContext = _context;
-
         }
         private void CityCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

@@ -22,15 +22,14 @@ namespace BaseView.Controls
     /// </summary>
     public partial class AnalysisUserControl : UserControl
     {
-        //private readonly AnalysisViewModel _context;
+        private readonly AnalysisViewModel _context;
 
         public AnalysisUserControl()
         {
             InitializeComponent();
-            //_context = new AnalysisViewModel((Application.Current as App)?.Context!);
-            //DataContext = _context;
-            //string txt = label.ContentStringFormat;
-            //Debug.WriteLine(txt);
+            _context = new AnalysisViewModel((Application.Current as App)?.Context!);
+            DataContext = _context;
+            //test.Content = _context.CityName;           
         }
     }
 }

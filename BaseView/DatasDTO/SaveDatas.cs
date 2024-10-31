@@ -9,59 +9,54 @@ namespace BaseView.DatasDTO
 {
     public class SaveDatas : BaseViewModel
     {
-        public string CityName { get; set; }
+        private string _cityName;
+        private int _pointNumber;
+        private DateTime[] _dates;
+        private decimal[] _pollution;
 
-        //private string nameCity;
-        //private int numberPoint;
-        //private DateTime[] dates;
-        //private decimal[] pollutions;
+        public string CityName
+        {
+            get => _cityName;
+            set
+            {
+                _cityName = value;
+                OnPropertyChanged();
+            }
+        }
+        public int PointNumber
+        {
+            get => _pointNumber;
+            set
+            {
+                _pointNumber = value;
+                OnPropertyChanged();
+            }
+        }
+        public DateTime[] Dates
+        {
+            get => _dates;
+            set
+            {
+                _dates = value;
+                OnPropertyChanged();
+            }
+        }
 
-        //public string NameCity
+        public decimal[] Pollution
+        {
+            get => _pollution;
+            set
+            {
+                _pollution = value;
+                OnPropertyChanged();
+            }
+        }
+
+        //public event EventHandler DataChanged;
+
+        //protected virtual void OnDataChanged()
         //{
-        //    get => nameCity;
-        //    set
-        //    {
-        //        nameCity = value;
-        //        OnPropertyChanged(nameof(NameCity));
-        //    }
-        //}
-
-        //public int NumberPoint
-        //{
-        //    get => numberPoint;
-        //    set
-        //    {
-        //        numberPoint = value;
-        //        OnPropertyChanged(nameof(NumberPoint));
-        //    }
-        //}
-
-        //public DateTime[] Dates
-        //{
-        //    get => dates;
-        //    set
-        //    {
-        //        dates = value;
-        //        OnPropertyChanged(nameof(Dates));
-        //    }
-        //}
-
-        //public decimal[] Pollutions
-        //{
-        //    get => pollutions;
-        //    set
-        //    {
-        //        pollutions = value;
-        //        OnPropertyChanged(nameof(Pollutions));
-        //    }
-        //}
-
-        //public SaveDatas(string cityname, int numberpoint, DateTime[] date, decimal[] pol)
-        //{
-        //    NameCity = cityname;
-        //    NumberPoint = numberpoint;
-        //    Dates = date;
-        //    Pollutions = pol;
+        //    DataChanged?.Invoke(this, EventArgs.Empty);
         //}
     }
 }

@@ -11,7 +11,7 @@
             <RowDefinition Height="0.1*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Label Content="{Binding Informations}" FontSize="18" Grid.Row="0" HorizontalContentAlignment="Center"/>
-        <!--<Label Content="{Binding IdPoint}" FontSize="25"/>-->
+        <Label Content="{Binding CityName}" FontSize="18" Grid.Row="0" HorizontalContentAlignment="Center"/>
+        
     </Grid>
 </UserControl>

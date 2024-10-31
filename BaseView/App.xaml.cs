@@ -29,9 +29,9 @@ namespace BaseView
 
             this._context = new DbContextFactory(builder.Options);
 
-            var saveServise = new SaveDatas();
-            var selectVM = new SelectViewModel(saveServise);
-            var analysisVM = new AnalysisViewModel(saveServise);
+            //var saveServise = new SaveDatas();
+            //var selectVM = new SelectViewModel(saveServise);
+            //var analysisVM = new AnalysisViewModel(saveServise);
 
         }
     }

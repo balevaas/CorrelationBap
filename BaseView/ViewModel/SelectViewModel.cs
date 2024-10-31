@@ -4,20 +4,19 @@ using MvvmHelpers.Commands;
 using System.Collections.ObjectModel;
 using BaseView.DatasDTO;
 using CommunityToolkit.Mvvm.Input;
+using System.Diagnostics;
+using System.Windows.Input;
 
 namespace BaseView.ViewModel
 {
     public class SelectViewModel : BaseViewModel
     {
         private readonly DataContext _model;
-        private string nameCity;
-        private int numberPoint;
-        private DateTime[] datesOneYear, datesSeasons;
-        private decimal[] pollution;
-        //public SaveDatas saveDatas = new SaveDatas();
+        
         public ObservableCollection<string> StationName { get; private set; }
         public int[] NumberYear { get; private set; }
         public int[] NumberMonth { get; private set; }
+        public AnalysisViewModel Analysis { get; private set; }
         public SelectViewModel(DataContext model)
         {
             _model = model;
@@ -35,7 +34,7 @@ namespace BaseView.ViewModel
         {
             StationID = new ObservableCollection<int>(_model.Stations.Where(p => p.Name == name).Select(p => p.ID));
             int id = StationID.ElementAt(0);
-            nameCity = name;
+            CityName = name; // сохраняем выбранный город в класс SaveDatas
             Points = GetIDByStationID(id);
             OnPropertyChanged(nameof(Points));
         }
@@ -66,7 +65,7 @@ namespace BaseView.ViewModel
             Seasons = new ObservableCollection<SeasonItem>();
             IDPoint = new ObservableCollection<int>(_model.Points.Where(p => p.ID == pointID).Select(p => p.ID));
             PointID = IDPoint.ElementAt(0);
-            numberPoint = PointID;
+            PointNumber = PointID; // сохранили выбранный ПНЗ в класс SaveDatas
             foreach (var year in GetYears(PointID))
             {
                 Years.Add(year);
@@ -128,6 +127,24 @@ namespace BaseView.ViewModel
                 OnPropertyChanged(nameof(IsSeasonRadioButtonEnabled));
             }
         }
+        private bool _isUserControl;
+        public bool IsUserControl
+        {
+            get => _isUserControl;
+            set
+            {
+                _isUserControl = value;
+                OnPropertyChanged(nameof(IsUserControl));
+            }
+        }
+        private AnalysisViewModel analysis;
+        public void UpdateUserControl()
+        {
+            int selectedYears = Years.Count(y => y.IsSelected);
+            IsUserControl = selectedYears >= 1;
+            //analysis = new AnalysisViewModel();
+            
+        }
         public void UpdateSelection()
         {
             int selectedCount = Years.Count(y => y.IsSelected);
@@ -154,9 +171,8 @@ namespace BaseView.ViewModel
         {
             NumberMonth = new ObservableCollection<int>(Months.Where(m => m.IsSelected).Select(m => m.Number)).ToArray();
             date = new DateTime[NumberMonth.Length];
-            datesOneYear = new DateTime[NumberMonth.Length];
             for (int i = 0; i < date.Length; i++) date[i] = new DateTime(NumberYear[0], NumberMonth[i], 01);
-            datesOneYear = date;
+            Dates = date; // сохранили массив выбранных дат за год в SaveDatas
             PollutionMas(date);
         }
         #endregion
@@ -200,16 +216,16 @@ namespace BaseView.ViewModel
                     list.Add(new DateTime(year, month, 01));
                 }
             }
-            datesSeasons = list.ToArray();
-            PollutionMas(datesSeasons);
+            Dates = list.ToArray(); // сохранили выбранный массив дат за сезон в SaveDatas
+            PollutionMas(Dates);
         }
         #endregion
 
         #region Загрузка загрязнений за выбранный период
         public decimal[] PollutionMas(DateTime[] date)
         {
-            pollution = new ObservableCollection<decimal>(_model.Pollutions.Where(m => date.Any(d => d.Date == m.Date)).Where(m => m.PointID == PointID).Select(m => m.Concentration)).ToArray();
-            return pollution;
+            PollutionZaeb = new ObservableCollection<decimal>(_model.Pollutions.Where(m => date.Any(d => d.Date == m.Date)).Where(m => m.PointID == PointID).Select(m => m.Concentration)).ToArray();
+            return PollutionZaeb;
         }
         #endregion
 
@@ -218,53 +234,97 @@ namespace BaseView.ViewModel
         private void SelectPollution()
         {
             SelectDate();
+            
+            UpdateUserControl();
         }
 
         public string Informations { get; set; }
+        private ObservableCollection<SaveDatas> _saveDatas;
+        public ObservableCollection<SaveDatas> SaveDatas
+        {
+            get => _saveDatas;
+            set
+            {
+                _saveDatas = value;
+                OnPropertyChanged(nameof(SaveDatas));
+            }
+        }
         private void SelectDate()
         {
+            SaveDatas = new ObservableCollection<SaveDatas>();
+            ZaebSave = new SaveDatas();
             NumberYear = new ObservableCollection<int>(Years.Where(m => m.IsSelected).Select(m => m.Year)).ToArray();
             if (NumberYear.Length == 1)
             {
-                OneYearPollut(datesOneYear);
-                //saves = new SaveDatas(nameCity, numberPoint, datesOneYear, pollution);
-                //SaveDatas = new List<SaveDatas> {
-                //    new SaveDatas { NameCity = nameCity, NumberPoint = numberPoint, Dates = datesOneYear, Pollutions = pollution }
-                //};
-                CityName = nameCity;
-                Informations = string.Format($"Город: {nameCity}, ПНЗА №{numberPoint}");
-                OnPropertyChanged(nameof(Informations));
+                OneYearPollut(Dates);
+                UpdateData();
+                //Informations = string.Format($"Город: {CityName}, ПНЗА №{PointNumber}");
+                //OnPropertyChanged(nameof(Informations));
             }
             else if (NumberYear.Length > 1)
             {
-                SeasonYearPollut(datesSeasons);
-                //SaveDatas = new List<SaveDatas> {
-                //    new SaveDatas { NameCity = nameCity, NumberPoint = numberPoint, Dates = datesSeasons, Pollutions = pollution }
-                //};
-                Informations = string.Format($"Город: {nameCity}, ПНЗА №{numberPoint}");
-                OnPropertyChanged(nameof(Informations));
+                SeasonYearPollut(Dates);
+                //Informations = string.Format($"Город: {CityName}, ПНЗА №{PointNumber}");
+                //OnPropertyChanged(nameof(Informations));
             }
         }
-        //public List<SaveDatas> SaveDatas { get; private set; }
-        //public SaveDatas saves;
 
-        private readonly SaveDatas _saves;
-        public SelectViewModel(SaveDatas saves)
-        {
-            _saves = saves;
-        }
+        private SaveDatas ZaebSave;
+        private string _cityName;
         public string CityName
         {
-            get => nameCity;
+            get => _cityName;
             set
             {
-                if (nameCity != value)
-                {
-                    nameCity = value;
-                    _saves.CityName = value;
-                    OnPropertyChanged();
-                }
+                _cityName = value;
+                OnPropertyChanged(nameof(CityName));
             }
+        }
+        private int _pointNumber;
+        public int PointNumber
+        {
+            get => _pointNumber;
+            set
+            {
+                _pointNumber = value;
+                OnPropertyChanged(nameof(PointNumber));
+            }
+        }
+        private DateTime[] _dates;
+        public DateTime[] Dates
+        {
+            get => _dates;
+            set
+            {
+                _dates = value;
+                OnPropertyChanged(nameof(Dates));
+            }
+        }
+        private decimal[] pollutionZaeb;
+        public decimal[] PollutionZaeb
+        {
+            get => pollutionZaeb;
+            set
+            {
+                pollutionZaeb = value;
+                OnPropertyChanged(nameof(PollutionZaeb));
+            }
+        }
+
+        public ObservableCollection<SaveDatas> Saves {  get; set; }
+        private void UpdateData()
+        {
+            Saves = new ObservableCollection<SaveDatas>();
+            var items = new SaveDatas
+            {
+                CityName = CityName,
+                PointNumber = PointNumber,
+                Dates = Dates,
+                Pollution = PollutionZaeb
+            };
+            Saves.Add(items);
+            Analysis = new AnalysisViewModel();
+            Analysis.SaveDatas(Saves);  
         }
         #endregion
     }
