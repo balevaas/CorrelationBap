@@ -11,6 +11,6 @@
             <RowDefinition Height="0.1*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        
+        <TextBlock Grid.Row="1"  Name="tb"/>
     </Grid>
 </UserControl>

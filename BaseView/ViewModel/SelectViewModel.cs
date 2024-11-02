@@ -6,6 +6,7 @@ using BaseView.DatasDTO;
 using CommunityToolkit.Mvvm.Input;
 using System.Diagnostics;
 using System.Windows.Input;
+using BaseData.Entities;
 
 namespace BaseView.ViewModel
 {
@@ -240,6 +241,7 @@ namespace BaseView.ViewModel
         }
 
         public string Informations { get; set; }
+        public string Correaltion { get; set; }
         private ObservableCollection<SaveDatas> _saveDatas;
         public ObservableCollection<SaveDatas> SaveDatas
         {
@@ -255,12 +257,16 @@ namespace BaseView.ViewModel
             SaveDatas = new ObservableCollection<SaveDatas>();
             ZaebSave = new SaveDatas();
             NumberYear = new ObservableCollection<int>(Years.Where(m => m.IsSelected).Select(m => m.Year)).ToArray();
+            double res;
             if (NumberYear.Length == 1)
             {
                 OneYearPollut(Dates);
                 UpdateData();
+                res = CalculateCorrelation();
                 Informations = string.Format($"Город: {CityName}, ПНЗА №{PointNumber}");
+                Correaltion = string.Format($"Корреляция: {res}");
                 OnPropertyChanged(nameof(Informations));
+                OnPropertyChanged(nameof(Correaltion));
             }
             else if (NumberYear.Length > 1)
             {
@@ -329,6 +335,28 @@ namespace BaseView.ViewModel
         }
 
         //public SelectViewModel() { }
+
+        private int[] wind = { 1, 2, 3 };
+        public double CalculateCorrelation()
+        {
+            if (PollutionZaeb == null) return 0;
+            else if (PollutionZaeb.Length != wind.Length) throw new ArgumentException("Arrays must be of equal length.");
+            else
+            {
+                decimal count = wind.Length;
+                int n = wind.Length;
+
+                decimal sumWind = wind.Sum();
+                decimal sumPol = PollutionZaeb.Sum();
+                decimal sumWindPol = wind.Zip(PollutionZaeb, (x, y) => x * y).Sum();
+                decimal sumWindSquare = wind.Sum(x => x * x);
+                decimal sumPolSquare = PollutionZaeb.Sum(x => x * x);
+                double correaltion = (double)(n * sumWindSquare - sumWind * sumPol)
+                    / Math.Sqrt((double)((n * sumWindSquare - sumWind * sumWind) * (n * sumPolSquare - sumPol * sumPol)));
+                return correaltion;
+            }
+        }
+
         #endregion
     }
 }

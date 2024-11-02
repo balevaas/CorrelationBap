@@ -43,7 +43,7 @@ namespace BaseView
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             _context.SelectPollution();
-            anal.Visibility = Visibility.Visible;
+            //anal.Visibility = Visibility.Visible;
             
         }
     }

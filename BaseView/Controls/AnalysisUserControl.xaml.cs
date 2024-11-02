@@ -24,17 +24,17 @@ namespace BaseView.Controls
     {
         private readonly AnalysisViewModel _context;
 
+        private double result;
         public AnalysisUserControl()
         {
             InitializeComponent();
             _context = new AnalysisViewModel((Application.Current as App)?.Context!);
-            DataContext = _context;
-            //DataContext = _context;
-            //analysis.DataContext = _context;
-            //analysis.Visibility = Visibility.Hidden;
-            //Debug.WriteLine(this.DataContext);
-            //analysis.UpdateLayout();
-            //test.Content = _context.CityName;           
+            DataContext = _context;                               
+            if(analysis.Visibility == Visibility.Visible)
+            {
+                result = _context.CalculateCorrelation();
+                tb.Text = result.ToString();
+            }
         }
     }
 }
