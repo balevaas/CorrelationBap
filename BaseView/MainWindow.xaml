@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BaseView" 
         xmlns:controls="clr-namespace:BaseView.Controls"
+        xmlns:oxy="http://oxyplot.org/wpf" xmlns:datasdto="clr-namespace:BaseView.DatasDTO" xmlns:viewmodel="clr-namespace:BaseView.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:CorrelationViewModel}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="850" 
+        Title="MainWindow" Height="700" Width="850" 
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
@@ -63,27 +64,23 @@
                         </ItemsControl>
                     </StackPanel>
                 </StackPanel>
-            </Border>
-            <!--<Button VerticalAlignment="Bottom" Margin="10" Content="Выполнить анализ" Command="{Binding SelectPollutionCommand}"/>-->
+            </Border>            
             <Button VerticalAlignment="Bottom" Margin="10" Content="Выполнить анализ" Click="Button_Click"/>
             
         </Grid>
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.1*"/>
+                <RowDefinition Height="0.09*"/>
+                <RowDefinition Height="0.08*"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <TextBlock Text="{Binding Informations}" HorizontalAlignment="Center" FontSize="25" Grid.Row="0"/>
+            <TextBlock Text="{Binding Informations}" HorizontalAlignment="Center" FontSize="20" Grid.Row="0"/>
 
-            <Label Grid.Row="1" Content="{Binding Correlation}" FontSize="25" HorizontalAlignment="Center"/>
-            <!--<controls:AnalysisUserControl x:Name="anal" Grid.Row="1" Visibility="Hidden"/>-->
-        </Grid>
-        <!--<UserControl Grid.Column="1" Margin="15">
-            --><!--<Label Content="{Binding CityName}" FontSize="25"/>--><!--
-            <Label Content="{Binding IdPoint}" FontSize="25"/>
-        </UserControl>-->
-        
-
+            <TextBlock Grid.Row="1" Text="{Binding ResultCorrelation}" FontSize="15" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+            
+            <oxy:PlotView Grid.Row="2" x:Name="plotView" Margin="10" Model="{Binding PlotModel}"></oxy:PlotView>
+            
+        </Grid>       
     </Grid>
 </Window>

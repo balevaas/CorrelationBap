@@ -22,19 +22,19 @@ namespace BaseView.Controls
     /// </summary>
     public partial class AnalysisUserControl : UserControl
     {
-        private readonly AnalysisViewModel _context;
+        //private readonly AnalysisViewModel _context;
 
         private double result;
         public AnalysisUserControl()
         {
             InitializeComponent();
-            _context = new AnalysisViewModel((Application.Current as App)?.Context!);
-            DataContext = _context;                               
-            if(analysis.Visibility == Visibility.Visible)
-            {
-                result = _context.CalculateCorrelation();
-                tb.Text = result.ToString();
-            }
+            //_context = new AnalysisViewModel((Application.Current as App)?.Context!);
+           /// DataContext = _context;                               
+            //if(analysis.Visibility == Visibility.Visible)
+           // {
+           ///     result = _context.CalculateCorrelation();
+           //     tb.Text = result.ToString();
+           // }
         }
     }
 }

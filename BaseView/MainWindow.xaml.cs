@@ -10,12 +10,12 @@ namespace BaseView
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly SelectViewModel _context;
+        private readonly CorrelationViewModel _context;
         
         public MainWindow()
         {
             InitializeComponent();
-            _context = new SelectViewModel((Application.Current as App)?.Context!);
+            _context = new CorrelationViewModel((Application.Current as App)?.Context!);
             DataContext = _context;            
         }
         private void CityCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -43,8 +43,7 @@ namespace BaseView
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             _context.SelectPollution();
-            //anal.Visibility = Visibility.Visible;
-            
+            //_context.DrawingCorr();
         }
     }
 }
