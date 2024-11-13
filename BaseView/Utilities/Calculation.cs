@@ -23,7 +23,11 @@ namespace BaseView.Utilities
                 _plotModel = value;
             }
         }
-
+        public class DataPoints
+        {
+            public double Wind { get; set; }
+            public double Pollution { get; set; }
+        }
         public (double, double, double) CalculateCorrelation(int[] mas, int IdStation, int[] NumberMonth, decimal[] Pollution)
         {
             if (mas.Length == 1) statistics = new Statistics(DateTime.Parse($"01.01.{mas[0]}"), DateTime.Parse($"31.12.{mas[0]}"), IdStation, GetConnectionStrings(Sqlite));
@@ -56,6 +60,7 @@ namespace BaseView.Utilities
 
         public PlotModel LoadData(int[] NumberYear, decimal[] Pollution)
         {
+            PlotModels = new PlotModel { Title = "График корреляции" };
             var series = new ScatterSeries { Title = $"Город - {saveDatas.CityName}, Пост - {saveDatas.PointNumber}, {NumberYear[0]} год\" ", MarkerType = MarkerType.Circle };
             List<DataPoints> dataPoints = new List<DataPoints>();
 

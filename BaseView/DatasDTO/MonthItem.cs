@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BaseView.DatasDTO
 {
-    public class MonthItem : BaseViewModel
+    public class MonthItem
     {
         public int Number { get; set; }
         public string Month { get; set; }
@@ -16,7 +16,16 @@ namespace BaseView.DatasDTO
         {
             return Month.ToString();
         }
-
+        private bool _isMonth;
+        public bool IsMonthComboboxEnabled
+        {
+            get => _isMonth;
+            set
+            {
+                _isMonth = value;
+                //OnPropertyChanged(nameof(IsMonthComboboxEnabled));
+            }
+        }
         public static string[] MonthNames()
         {
             string[] names =

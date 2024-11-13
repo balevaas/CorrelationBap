@@ -16,6 +16,15 @@ namespace BaseView.DatasDTO
         }
         public bool IsSelected { get; set; }
 
+        private bool _isSeason;
+        public bool IsSeasonRadioButtonEnabled
+        {
+            get => _isSeason;
+            set
+            {
+                _isSeason = value;
+            }
+        }
         public static string[] SeasonNames()
         {
             string[] names =
