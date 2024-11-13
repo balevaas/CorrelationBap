@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BaseView" 
-        xmlns:controls="clr-namespace:BaseView.Controls"
         xmlns:oxy="http://oxyplot.org/wpf" xmlns:datasdto="clr-namespace:BaseView.DatasDTO" xmlns:viewmodel="clr-namespace:BaseView.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:CorrelationViewModel}"
         mc:Ignorable="d"
         Title="MainWindow" Height="700" Width="850" 
@@ -19,7 +18,7 @@
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0">
             <Border Background="GhostWhite" BorderBrush="DimGray" BorderThickness="1">
-                <StackPanel>
+                <StackPanel VerticalAlignment="Top">
                     <Label Margin="10,0,10,0" Content="Выберите город:"/>
                     <ComboBox Margin="5,0,5,0"
                     Name="CityCB" ItemsSource="{Binding Path=StationName}"
@@ -63,10 +62,13 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </StackPanel>
-                </StackPanel>
-            </Border>            
-            <Button VerticalAlignment="Bottom" Margin="10" Content="Выполнить анализ" Click="Button_Click"/>
-            
+
+                    <Button x:Name="AnalysisBtn" VerticalAlignment="Bottom" Margin="10" Content="Выполнить анализ" Click="AnalysisBtn_Click"/>
+                </StackPanel>       
+            </Border>
+
+            <Button x:Name="DataBaseBtn" Content="Просмотр данных" VerticalAlignment="Bottom" Margin="10"/>
+
         </Grid>
 
         <Grid Grid.Column="1">

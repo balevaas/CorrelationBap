@@ -10,14 +10,22 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.71" />
     <PackageReference Include="OxyPlot.Core" Version="2.2.0" />
     <PackageReference Include="OxyPlot.Wpf" Version="2.2.0" />
     <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.119" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BaseData\BaseData.csproj" />
     <ProjectReference Include="..\ConnectionConfig\ConnectionConfig.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="WeatherDataParser">
+      <HintPath>C:\Users\Anastasia\source\repos\WeatherDataParser\WeatherDataParser\bin\Debug\net8.0\WeatherDataParser.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

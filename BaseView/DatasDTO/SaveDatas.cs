@@ -10,53 +10,44 @@ namespace BaseView.DatasDTO
     public class SaveDatas : BaseViewModel
     {
         private string _cityName;
-        private int _pointNumber;
-        private DateTime[] _dates;
-        private decimal[] _pollution;
-
         public string CityName
         {
             get => _cityName;
             set
             {
                 _cityName = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(CityName));
             }
         }
+        private int _pointNumber;
         public int PointNumber
         {
             get => _pointNumber;
             set
             {
                 _pointNumber = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(PointNumber));
             }
         }
+        private DateTime[] _dates;
         public DateTime[] Dates
         {
             get => _dates;
             set
             {
                 _dates = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Dates));
             }
         }
-
+        private decimal[] pollution;
         public decimal[] Pollution
         {
-            get => _pollution;
+            get => pollution;
             set
             {
-                _pollution = value;
-                OnPropertyChanged();
+                pollution = value;
+                OnPropertyChanged(nameof(Pollution));
             }
         }
-
-        //public event EventHandler DataChanged;
-
-        //protected virtual void OnDataChanged()
-        //{
-        //    DataChanged?.Invoke(this, EventArgs.Empty);
-        //}
     }
 }

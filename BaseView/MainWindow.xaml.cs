@@ -1,4 +1,4 @@
-﻿using BaseView.Controls;
+﻿
 using BaseView.ViewModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -40,10 +40,9 @@ namespace BaseView
             
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void AnalysisBtn_Click(object sender, RoutedEventArgs e)
         {
             _context.SelectPollution();
-            //_context.DrawingCorr();
         }
     }
 }
