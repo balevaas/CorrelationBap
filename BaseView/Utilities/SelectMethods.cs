@@ -74,13 +74,13 @@ namespace BaseView.Utilities
         public ObservableCollection<int> StationID { get; private set; }
         public List<int> Points { get; private set; }
         public int IdStation { get; set; }
-        public (List<int> Points, int IdStation) SelectStation(string name, DataContext _model)
+        public (List<int> Points, int IdStation, string cityName) SelectStation(string name, DataContext _model)
         {
             StationID = new ObservableCollection<int>(_model.Stations.Where(p => p.Name == name).Select(p => p.ID));
             IdStation = StationID.ElementAt(0);
-            saveDatas.CityName = name; // сохраняем выбранный город в класс SaveDatas
+            string cityName = name; // сохраняем выбранный город в класс SaveDatas
             Points = GetIDByStationID(IdStation, _model);
-            return (Points, IdStation);
+            return (Points, IdStation, cityName);
         }
 
         public ObservableCollection<int> IDPoint { get; private set; }

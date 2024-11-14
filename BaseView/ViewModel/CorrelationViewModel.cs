@@ -44,6 +44,7 @@ namespace BaseView.ViewModel
             var select = selectMethods.SelectStation(name, _model);
             Points = select.Points;
             IdStation = select.IdStation;
+            NameCity = select.cityName;
             OnPropertyChanged(nameof(Points));
         }
         #endregion
@@ -159,19 +160,33 @@ namespace BaseView.ViewModel
 
         public Calculation calc = new Calculation();
         public double Correlation, Slope, Intercept;
+        public string NameCity { get; set; }    
         private void SelectDate()
         {            
-            NumberYear = new ObservableCollection<int>(Years.Where(m => m.IsSelected).Select(m => m.Year)).ToArray();
-            
+            NumberYear = new ObservableCollection<int>(Years.Where(m => m.IsSelected).Select(m => m.Year)).ToArray();            
             
             if (NumberYear.Length == 1)
             {
                 OneYearPollut(saveDatas.Dates);
+                Informations = string.Format($"Город: {NameCity}, ПНЗА №{PointID},\n {NumberYear[0]} год");
+                OnPropertyChanged(nameof(Informations));
                 ResultCorrelations();
             }
             else if (NumberYear.Length > 1)
             {
+                string years = "";
                 SeasonYearPollut(saveDatas.Dates);
+                int i = 0;
+                while(i != NumberYear.Length)
+                {
+                    if (i < NumberYear.Length - 1) years += NumberYear[i].ToString() + ", ";
+                    else if (i == NumberYear.Length - 1) years += NumberYear[i].ToString();
+                    
+                    i++;
+                }
+                years += " год.";
+                Informations = string.Format($"Город: {NameCity}, ПНЗА №{PointID},\n {years}");
+                OnPropertyChanged(nameof(Informations));
                 ResultCorrelations();
             }
         }
@@ -183,7 +198,7 @@ namespace BaseView.ViewModel
             Slope = resultCalculate.Item2;
             Intercept = resultCalculate.Item3;
             string CorrelationEquation = string.Format("y = {0:0.##}x + {1:0.##}", Slope, Intercept);
-            Informations = string.Format($"Город: {saveDatas.CityName}, ПНЗА №{saveDatas.PointNumber}");
+           
             ResultCorrelation = string.Format($"Корреляция: {Math.Round(Correlation, 2)} \n{CorrelationEquation}");
             OnPropertyChanged(nameof(ResultCorrelation));
             OnPropertyChanged(nameof(Informations));
@@ -193,7 +208,7 @@ namespace BaseView.ViewModel
         public PlotModel PlotModel { get; set; }
         private void DrawingCorr()
         {            
-            PlotModel = calc.LoadData(NumberYear, saveDatas.Pollution);
+            PlotModel = calc.LoadData(NumberYear, saveDatas.Pollution, NameCity, PointID);
             OnPropertyChanged(nameof(PlotModel));
         }        
         #endregion

@@ -58,10 +58,15 @@ namespace BaseView.Utilities
             }
         }       
 
-        public PlotModel LoadData(int[] NumberYear, decimal[] Pollution)
+        public PlotModel LoadData(int[] NumberYear, decimal[] Pollution, string cityName, int pointId)
         {
             PlotModels = new PlotModel { Title = "График корреляции" };
-            var series = new ScatterSeries { Title = $"Город - {saveDatas.CityName}, Пост - {saveDatas.PointNumber}, {NumberYear[0]} год\" ", MarkerType = MarkerType.Circle };
+            var series = new ScatterSeries();
+            if (NumberYear.Length == 1)
+            {
+                series = new ScatterSeries { Title = $"Город - {cityName}, Пост - {pointId}, {NumberYear[0]} год\" ", MarkerType = MarkerType.Circle };
+            }
+            else series = new ScatterSeries { Title = $"Город - {cityName}, Пост - {pointId}", MarkerType = MarkerType.Circle };
             List<DataPoints> dataPoints = new List<DataPoints>();
 
             for (int i = 0; i < Pollution.Length; i++)
