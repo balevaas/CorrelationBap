@@ -21,12 +21,17 @@ namespace BaseView.ViewModel
         public ObservableCollection<string> StationName { get; private set; }
         public Parser parcer;
         public SaveDatas saveDatas = new SaveDatas();
+        public int[] StationID { get; private set; }
                
         public CorrelationViewModel(DataContext model)
         {
             _model = model;
             parcer = new Parser(DateTime.Parse("01.01.2021"),GetConnectionStrings(Sqlite));
-            parcer.FullUpdate();
+            StationID = new ObservableCollection<int>(_model.Stations.Select(i => i.ID)).ToArray();
+            for(int i = 0; i < StationID.Length; i++)
+            {
+                parcer.UpdateStationData(StationID[i]);
+            }
 
             StationName = selectMethods.SelectStationName(_model);
 

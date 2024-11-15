@@ -22,13 +22,13 @@
                     <Label Margin="10,0,10,0" Content="Выберите город:"/>
                     <ComboBox Margin="5,0,5,0"
                     Name="CityCB" ItemsSource="{Binding Path=StationName}"
-                    SelectedItem="{Binding Path=SelectStationID}"
+                    SelectedItem="{Binding Path=SelectStationID, Mode=TwoWay}"
                     SelectionChanged="CityCB_SelectionChanged"/>
 
                     <Label Name="LabelPoint" Margin="10,0,10,0" Content="Выберите ПНЗА:"/>
                     <ComboBox Margin="5,0,5,0"
                    Name="PointCB" ItemsSource="{Binding Path=Points}"
-                   SelectedItem="{Binding Path=SelectPointID}"
+                   SelectedItem="{Binding Path=SelectPointID, Mode=TwoWay}"
                    SelectionChanged="PointCB_SelectionChanged"/>
 
                     <Label Name="LabelYear" Margin="10,0,10,0" Content="Выберите год(а):"/>
