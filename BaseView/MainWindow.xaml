@@ -35,23 +35,26 @@
                     <ComboBox Margin="5,0,5,0" ItemsSource="{Binding Years}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <CheckBox Content="{Binding Year}" IsChecked="{Binding IsSelected, Mode=TwoWay}"
-                              Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
+                                <CheckBox x:Name="YearsCheckBox" Content="{Binding Year}" IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                          Checked="YearsCheckBox_Checked" Unchecked="YearsCheckBox_Checked"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ComboBox>
 
-                    <Label Name="LabelMonth" Margin="10,0,10,0" Content="Выберите месяц(ы):"/>
-                    <ComboBox Margin="5,0,5,0" x:Name="MonthCB" ItemsSource="{Binding Months}" 
-                  IsEnabled="{Binding IsMonthComboboxEnabled}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <CheckBox Content="{Binding Month}" IsChecked="{Binding IsSelected, Mode=TwoWay}"
-                              Checked="CheckBox_Checked_1" Unchecked="CheckBox_Checked_1"/>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ComboBox>
+                    <StackPanel x:Name="PanelMonth" Visibility="Collapsed">
+                        <Label Name="LabelMonth" Margin="10,0,10,0" Content="Выберите месяц(ы):"/>
+                        <ComboBox Margin="5,0,5,0" x:Name="MonthCB" ItemsSource="{Binding Months}" 
+                            IsEnabled="{Binding IsMonthComboboxEnabled}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <CheckBox Content="{Binding Month}" IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                        />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ComboBox>
 
+                    </StackPanel>
+                    
                     <StackPanel Margin="10,0,10,0" x:Name="SeasonsPanel" Visibility="{Binding IsSeasonRadioButtonEnabled, Converter= {StaticResource BooleanToVisibilityConverter}}">
                         <Label Content="Выберите сезон:"/>
                         <ItemsControl ItemsSource="{Binding Seasons}">
@@ -63,11 +66,12 @@
                         </ItemsControl>
                     </StackPanel>
 
-                    <Button x:Name="AnalysisBtn" VerticalAlignment="Bottom" Margin="10" Content="Выполнить анализ" Click="AnalysisBtn_Click"/>
-                </StackPanel>       
+                    
+                </StackPanel>
             </Border>
+            <Button x:Name="AnalysisBtn" VerticalAlignment="Bottom" Margin="10" Content="Выполнить анализ" Click="AnalysisBtn_Click"/>
 
-            <Button x:Name="DataBaseBtn" Content="Просмотр данных" VerticalAlignment="Bottom" Margin="10"/>
+            <!--<Button x:Name="DataBaseBtn" Content="Просмотр данных" VerticalAlignment="Bottom" Margin="10"/>-->
 
         </Grid>
 
@@ -76,13 +80,15 @@
                 <RowDefinition Height="0.09*"/>
                 <RowDefinition Height="0.08*"/>
                 <RowDefinition/>
+                <RowDefinition Height="0.08*"/>
             </Grid.RowDefinitions>
             <TextBlock Text="{Binding Informations}" TextAlignment="Center" HorizontalAlignment="Center" FontSize="20" Grid.Row="0"/>
 
             <TextBlock Grid.Row="1" Text="{Binding ResultCorrelation}" FontSize="15" HorizontalAlignment="Left" Margin="10,0,0,0"/>
-            
-            <oxy:PlotView Grid.Row="2" x:Name="plotView" Margin="10" Model="{Binding PlotModel}"></oxy:PlotView>
-            
+
+            <oxy:PlotView Grid.Row="2" x:Name="plotView" Margin="10" Model="{Binding PlotModel}"/>
+            <Button x:Name="SaveBtn" VerticalAlignment="Bottom" Margin="10" Content="Сохранить результат" 
+                    Grid.Row="4" HorizontalAlignment="Center" Click="SaveBtn_Click"/>
         </Grid>       
     </Grid>
 </Window>

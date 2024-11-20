@@ -6,8 +6,10 @@ using CommunityToolkit.Mvvm.Input;
 using MvvmHelpers;
 using MvvmHelpers.Commands;
 using OxyPlot;
+using OxyPlot.Wpf;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.IO;
 using WeatherDataParser;
 using static ConnectionConfig.Strings;
 
@@ -26,7 +28,7 @@ namespace BaseView.ViewModel
         public CorrelationViewModel(DataContext model)
         {
             _model = model;
-            parcer = new Parser(DateTime.Parse("01.01.2021"),GetConnectionStrings(Sqlite));
+            parcer = new Parser(DateTime.Parse("01.01.2019"),GetConnectionStrings(Sqlite));
             StationID = new ObservableCollection<int>(_model.Stations.Select(i => i.ID)).ToArray();
             for(int i = 0; i < StationID.Length; i++)
             {
@@ -80,15 +82,16 @@ namespace BaseView.ViewModel
         
         public bool IsMonthComboboxEnabled { get; set; }
         public bool IsSeasonRadioButtonEnabled { get; set; }
+        public int SelectedCount { get; set; }
         public void UpdateSelection()
         {
             MonthItem months = new MonthItem();
             SeasonItem season = new SeasonItem();
-            int selectedCount = Years.Count(y => y.IsSelected);
-            months.IsMonthComboboxEnabled = selectedCount == 1;
+            SelectedCount = Years.Count(y => y.IsSelected);
+            months.IsMonthComboboxEnabled = SelectedCount == 1;
             IsMonthComboboxEnabled = months.IsMonthComboboxEnabled;
             
-            season.IsSeasonRadioButtonEnabled = selectedCount > 1;
+            season.IsSeasonRadioButtonEnabled = SelectedCount > 1;
             IsSeasonRadioButtonEnabled = season.IsSeasonRadioButtonEnabled;
             OnPropertyChanged(nameof(IsMonthComboboxEnabled));
             OnPropertyChanged(nameof(IsSeasonRadioButtonEnabled));
@@ -105,7 +108,7 @@ namespace BaseView.ViewModel
             date = new DateTime[NumberMonth.Length];
             for (int i = 0; i < date.Length; i++) date[i] = new DateTime(NumberYear[0], NumberMonth[i], 01);
             saveDatas.Dates = date; // сохранили массив выбранных дат за год в SaveDatas
-            saveDatas.Pollution = selectMethods.PollutionMas(date, _model, PointID);
+            saveDatas.Pollution = selectMethods.GetPollution(date, _model, PointID);
         }
         #endregion
 
@@ -149,7 +152,7 @@ namespace BaseView.ViewModel
                 }
             }
             saveDatas.Dates = list.ToArray(); // сохранили выбранный массив дат за сезон в SaveDatas
-            saveDatas.Pollution = selectMethods.PollutionMas(saveDatas.Dates, _model, PointID);
+            saveDatas.Pollution = selectMethods.GetPollution(saveDatas.Dates, _model, PointID);
         }
         #endregion
 
@@ -173,7 +176,7 @@ namespace BaseView.ViewModel
             if (NumberYear.Length == 1)
             {
                 OneYearPollut(saveDatas.Dates);
-                Informations = string.Format($"Город: {NameCity}, ПНЗА №{PointID},\n {NumberYear[0]} год");
+                Informations = string.Format($"Город: {NameCity}, Пост - №{PointID}\n {NumberYear[0]} год");
                 OnPropertyChanged(nameof(Informations));
                 ResultCorrelations();
             }
@@ -190,7 +193,7 @@ namespace BaseView.ViewModel
                     i++;
                 }
                 years += " год.";
-                Informations = string.Format($"Город: {NameCity}, ПНЗА №{PointID},\n {years}");
+                Informations = string.Format($"Город: {NameCity}, Пост - №{PointID}\n {years}");
                 OnPropertyChanged(nameof(Informations));
                 ResultCorrelations();
             }
@@ -204,18 +207,17 @@ namespace BaseView.ViewModel
             Intercept = resultCalculate.Item3;
             string CorrelationEquation = string.Format("y = {0:0.##}x + {1:0.##}", Slope, Intercept);
            
-            ResultCorrelation = string.Format($"Корреляция: {Math.Round(Correlation, 2)} \n{CorrelationEquation}");
+            ResultCorrelation = string.Format($"Значение корреляции: {Math.Round(Correlation, 2)} \n{CorrelationEquation}");
             OnPropertyChanged(nameof(ResultCorrelation));
             OnPropertyChanged(nameof(Informations));
             DrawingCorr();
         }
-
         public PlotModel PlotModel { get; set; }
         private void DrawingCorr()
         {            
-            PlotModel = calc.LoadData(NumberYear, saveDatas.Pollution, NameCity, PointID);
+            PlotModel = calc.LoadData(NumberYear, saveDatas.Pollution, NameCity, PointID, saveDatas.Dates);
             OnPropertyChanged(nameof(PlotModel));
-        }        
+        }
         #endregion
     }
 }

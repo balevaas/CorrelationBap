@@ -1,7 +1,12 @@
 ﻿
 using BaseView.ViewModel;
+using OxyPlot.Series;
+using OxyPlot.Wpf;
+using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace BaseView
 {
@@ -32,17 +37,56 @@ namespace BaseView
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            _context.UpdateSelection();
-        }
-
-        private void CheckBox_Checked_1(object sender, RoutedEventArgs e)
-        {
             
         }
 
         private void AnalysisBtn_Click(object sender, RoutedEventArgs e)
         {
             _context.SelectPollution();
+        }
+
+        private void YearsCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            _context.UpdateSelection();
+            if(_context.SelectedCount == 1) PanelMonth.Visibility = Visibility.Visible;
+        }
+
+        private void SaveBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (plotView.Model == null)
+            {
+                MessageBox.Show("Для выбранных данных график не построен");
+                return;
+            }
+            else SavePlotAsPng($"{_context.NameCity},№{_context.PointID}.png");
+            
+        }
+
+        private void SavePlotAsPng(string pngFilePath)
+        {
+            var pngExporter = new PngExporter
+            {
+                Width = (int)plotView.ActualWidth, 
+                Height = (int)plotView.ActualHeight 
+            };
+
+            var bitmap = pngExporter.ExportToBitmap(plotView.Model);
+
+            if (bitmap != null)
+            {
+                using (var stream = File.Create(pngFilePath))
+                {
+                    var encoder = new PngBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(bitmap));
+                    encoder.Save(stream);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Ошибка экспорта графика в PNG.");
+                return; // Прерываем выполнение функции, если bitmap null
+            }
+            MessageBox.Show($"График сохранен в {pngFilePath}");
         }
     }
 }

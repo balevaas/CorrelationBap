@@ -34,7 +34,6 @@ namespace BaseView.Utilities
             return _model.Pollutions.Where(p => p.PointID == id).Select(y => new YearItem { Year = y.Date.Year, IsSelected = false }).Distinct().ToList();
         }
 
-
         public List<MonthItem> GetMonthNames(DataContext _model)
         {
             int[] numMonth = new ObservableCollection<int>(_model.Pollutions.Select(p => p.Date.Month).Distinct()).ToArray();
@@ -65,7 +64,7 @@ namespace BaseView.Utilities
             return items;
         }
 
-        public decimal[] PollutionMas(DateTime[] date, DataContext _model, int PointID)
+        public decimal[] GetPollution(DateTime[] date, DataContext _model, int PointID)
         {
             decimal[] Pollution = new ObservableCollection<decimal>(_model.Pollutions.Where(m => date.Any(d => d.Date == m.Date)).Where(m => m.PointID == PointID).Select(m => m.Concentration)).ToArray();
             return Pollution;
@@ -84,6 +83,7 @@ namespace BaseView.Utilities
         }
 
         public ObservableCollection<int> IDPoint { get; private set; }
+
         public int PointID;
 
         public ObservableCollection<YearItem> Years { get; private set; }
@@ -96,7 +96,6 @@ namespace BaseView.Utilities
             Seasons = new ObservableCollection<SeasonItem>();
             IDPoint = new ObservableCollection<int>(_model.Points.Where(p => p.ID == pointID).Select(p => p.ID));
             PointID = IDPoint.ElementAt(0);
-            saveDatas.PointNumber = PointID; // сохранили выбранный ПНЗ в класс SaveDatas
             foreach (var year in GetYears(PointID, _model))
             {
                 Years.Add(year);
@@ -109,9 +108,7 @@ namespace BaseView.Utilities
             {
                 Seasons.Add(seasons);
             }
-            //OnPropertyChanged(nameof(Years));
-            //OnPropertyChanged(nameof(Months));
-            //OnPropertyChanged(nameof(Seasons));
+
             return (Years, Months, Seasons, PointID);
         }
     }

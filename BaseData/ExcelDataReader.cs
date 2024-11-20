@@ -15,8 +15,6 @@ namespace BaseData
             {
                 var worksheet = package.Workbook.Worksheets[sheetName];
                 if (worksheet == null) throw new Exception($"Лист '{sheetName}' не найден.");
-                //int rowCount = worksheet.Dimension.Rows;
-                //int colCount = worksheet.Dimension.Columns;
 
                 int lastRow = 0, lastCol = 0;
                 for (int row = 1; row <= worksheet.Dimension.Rows; row++)
@@ -28,9 +26,6 @@ namespace BaseData
                 {
                     if (!string.IsNullOrWhiteSpace(worksheet.Cells[1, col].Text)) lastCol = col;
                 }
-                //Debug.WriteLine(lastRow);
-
-                //int[] number = { 25, 26, 27, 41, 48, 2, 8, 11, 1, 2, 3 };
 
                 var columnData = new List<List<string>>(); 
 

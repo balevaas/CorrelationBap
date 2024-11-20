@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <Reference Include="WeatherDataParser">
-      <HintPath>C:\Users\Anastasia\source\repos\WeatherDataParser\WeatherDataParser\bin\Debug\net8.0\WeatherDataParser.dll</HintPath>
+      <HintPath>D:\Работа\VS\WeatherDataParser\WeatherDataParser\bin\Debug\net8.0\WeatherDataParser.dll</HintPath>
     </Reference>
   </ItemGroup>
 
