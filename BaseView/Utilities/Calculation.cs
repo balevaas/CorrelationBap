@@ -70,9 +70,9 @@ namespace BaseView.Utilities
             }
         }
 
-        public PlotModel LoadData(int[] NumberYear, decimal[] Pollution, string cityName, int pointId, DateTime[] dates)
+        public PlotModel LoadData(int[] NumberYear, decimal[] Pollution, string cityName, int pointId, string info, string rescorr)
         {
-            PlotModels = new PlotModel { Title = "График корреляции" };
+            PlotModels = new PlotModel { Title = info, Subtitle = rescorr};
             PlotModels.PlotAreaBorderThickness = new OxyThickness(2);
             PlotModels.PlotAreaBorderColor = OxyColors.Gray;
             var series = new ScatterSeries();
@@ -87,7 +87,7 @@ namespace BaseView.Utilities
 
             for (int i = 0; i < Pollution.Length; i++)
             {
-                dataPoints.Add(new DataPoints { Wind = (double)Shtils[i], Pollution = (double)Pollution[i], Dates = dates[i] });
+                dataPoints.Add(new DataPoints { Wind = (double)Shtils[i], Pollution = (double)Pollution[i]});
             }
             foreach (var point in dataPoints)
             {

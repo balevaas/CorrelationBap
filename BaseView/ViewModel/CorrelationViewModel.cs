@@ -176,8 +176,8 @@ namespace BaseView.ViewModel
             if (NumberYear.Length == 1)
             {
                 OneYearPollut(saveDatas.Dates);
-                Informations = string.Format($"Город: {NameCity}, Пост - №{PointID}\n {NumberYear[0]} год");
-                OnPropertyChanged(nameof(Informations));
+                Informations = string.Format($"Город: {NameCity}, Пост - №{PointID}, {NumberYear[0]} год");
+                //OnPropertyChanged(nameof(Informations));
                 ResultCorrelations();
             }
             else if (NumberYear.Length > 1)
@@ -193,8 +193,7 @@ namespace BaseView.ViewModel
                     i++;
                 }
                 years += " год.";
-                Informations = string.Format($"Город: {NameCity}, Пост - №{PointID}\n {years}");
-                OnPropertyChanged(nameof(Informations));
+                Informations = string.Format($"Город: {NameCity}, Пост - №{PointID}\nСезон - {SelectSeason[0]} за {years}");
                 ResultCorrelations();
             }
         }
@@ -205,17 +204,14 @@ namespace BaseView.ViewModel
             Correlation = resultCalculate.Item1;
             Slope = resultCalculate.Item2;
             Intercept = resultCalculate.Item3;
-            string CorrelationEquation = string.Format("y = {0:0.##}x + {1:0.##}", Slope, Intercept);
-           
+            string CorrelationEquation = string.Format("y = {0:0.##}x + {1:0.##}", Slope, Intercept);           
             ResultCorrelation = string.Format($"Значение корреляции: {Math.Round(Correlation, 2)} \n{CorrelationEquation}");
-            OnPropertyChanged(nameof(ResultCorrelation));
-            OnPropertyChanged(nameof(Informations));
             DrawingCorr();
         }
         public PlotModel PlotModel { get; set; }
         private void DrawingCorr()
         {            
-            PlotModel = calc.LoadData(NumberYear, saveDatas.Pollution, NameCity, PointID, saveDatas.Dates);
+            PlotModel = calc.LoadData(NumberYear, saveDatas.Pollution, NameCity, PointID, Informations, ResultCorrelation);
             OnPropertyChanged(nameof(PlotModel));
         }
         #endregion

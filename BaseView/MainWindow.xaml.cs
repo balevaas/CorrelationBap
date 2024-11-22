@@ -66,8 +66,8 @@ namespace BaseView
         {
             var pngExporter = new PngExporter
             {
-                Width = (int)plotView.ActualWidth, 
-                Height = (int)plotView.ActualHeight 
+                Width = (int)graphGrid.ActualWidth, 
+                Height = (int)graphGrid.ActualHeight 
             };
 
             var bitmap = pngExporter.ExportToBitmap(plotView.Model);
