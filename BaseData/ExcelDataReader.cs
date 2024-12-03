@@ -1,6 +1,5 @@
 ﻿using BaseData.Entities;
 using OfficeOpenXml;
-using System.Diagnostics;
 
 namespace BaseData
 {
@@ -11,11 +10,9 @@ namespace BaseData
             var entities = new List<Pollution>();
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
-            using(var package = new ExcelPackage(new FileInfo(filePath)))
+            using (var package = new ExcelPackage(new FileInfo(filePath)))
             {
-                var worksheet = package.Workbook.Worksheets[sheetName];
-                if (worksheet == null) throw new Exception($"Лист '{sheetName}' не найден.");
-
+                var worksheet = package.Workbook.Worksheets[sheetName] ?? throw new Exception($"Лист '{sheetName}' не найден.");
                 int lastRow = 0, lastCol = 0;
                 for (int row = 1; row <= worksheet.Dimension.Rows; row++)
                 {
@@ -27,19 +24,19 @@ namespace BaseData
                     if (!string.IsNullOrWhiteSpace(worksheet.Cells[1, col].Text)) lastCol = col;
                 }
 
-                var columnData = new List<List<string>>(); 
+                var columnData = new List<List<string>>();
 
-                for(int col = 1; col <= lastCol; col++)
+                for (int col = 1; col <= lastCol; col++)
                 {
                     var values = new List<string>();
-                    for(int row = 2;  row <= lastRow; row++)
+                    for (int row = 2; row <= lastRow; row++)
                     {
                         values.Add(worksheet.Cells[row, col].Text);
                     }
                     columnData.Add(values);
                 }
 
-                for(int i = 0; i < columnData[0].Count; i++)
+                for (int i = 0; i < columnData[0].Count; i++)
                 {
                     var entity = new Pollution
                     {

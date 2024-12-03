@@ -23,7 +23,6 @@ namespace BaseView.DatasDTO
             set
             {
                 _isMonth = value;
-                //OnPropertyChanged(nameof(IsMonthComboboxEnabled));
             }
         }
         public static string[] MonthNames()
@@ -41,7 +40,7 @@ namespace BaseView.DatasDTO
             "Сентябрь",  // 8
             "Октябрь",   // 9
             "Ноябрь",    // 10
-            "Декабрь"    // 11
+            "Декабрь",    // 11
         ];
             return names;
         }

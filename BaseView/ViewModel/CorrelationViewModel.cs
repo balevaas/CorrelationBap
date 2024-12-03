@@ -19,10 +19,10 @@ namespace BaseView.ViewModel
     {
         private readonly DataContext _model;
 
-        public SelectMethods selectMethods = new SelectMethods();
+        public SelectMethods selectMethods = new();
         public ObservableCollection<string> StationName { get; private set; }
         public Parser parcer;
-        public SaveDatas saveDatas = new SaveDatas();
+        public SaveDatas saveDatas = new();
         public int[] StationID { get; private set; }
                
         public CorrelationViewModel(DataContext model)
@@ -35,7 +35,7 @@ namespace BaseView.ViewModel
                 parcer.UpdateStationData(StationID[i]);
             }
 
-            StationName = selectMethods.SelectStationName(_model);
+            StationName = SelectMethods.SelectStationName(_model);
 
             SelectStationID = new Command<string>(SelectStation);
             SelectPointID = new Command<int>(SelectPoint);
@@ -85,8 +85,8 @@ namespace BaseView.ViewModel
         public int SelectedCount { get; set; }
         public void UpdateSelection()
         {
-            MonthItem months = new MonthItem();
-            SeasonItem season = new SeasonItem();
+            MonthItem months = new();
+            SeasonItem season = new();
             SelectedCount = Years.Count(y => y.IsSelected);
             months.IsMonthComboboxEnabled = SelectedCount == 1;
             IsMonthComboboxEnabled = months.IsMonthComboboxEnabled;
@@ -103,18 +103,26 @@ namespace BaseView.ViewModel
         public int[] NumberMonth { get; private set; }
 
         private void OneYearPollut(DateTime[] date)
-        {
+        {            
             NumberMonth = new ObservableCollection<int>(Months.Where(m => m.IsSelected).Select(m => m.Number)).ToArray();
+            if (NumberMonth[0] == 13 && NumberMonth.Length == 1)
+            {
+                int[] numbers = Months.Select(m => m.Number).ToArray();
+                NumberMonth = numbers.Take(numbers.Length - 1).ToArray();
+            }
+
             date = new DateTime[NumberMonth.Length];
             for (int i = 0; i < date.Length; i++) date[i] = new DateTime(NumberYear[0], NumberMonth[i], 01);
             saveDatas.Dates = date; // сохранили массив выбранных дат за год в SaveDatas
-            saveDatas.Pollution = selectMethods.GetPollution(date, _model, PointID);
+            saveDatas.Pollution = SelectMethods.GetPollution(date, _model, PointID);
+            
+            
         }
         #endregion
 
         #region Даты за сезон
         public string[] SelectSeason { get; private set; }
-        private void SeasonYearPollut(DateTime[] date)
+        private void SeasonYearPollut()
         {
             SelectSeason = new ObservableCollection<string>(Seasons.Where(m => m.IsSelected).Select(m => m.Name)).ToArray();
             switch (SelectSeason[0])
@@ -143,7 +151,7 @@ namespace BaseView.ViewModel
         }
         private void InsertingDateSeason(int[] mas)
         {
-            List<DateTime> list = new List<DateTime>();
+            List<DateTime> list = [];
             foreach (var year in NumberYear)
             {
                 foreach (var month in mas)
@@ -151,8 +159,8 @@ namespace BaseView.ViewModel
                     list.Add(new DateTime(year, month, 01));
                 }
             }
-            saveDatas.Dates = list.ToArray(); // сохранили выбранный массив дат за сезон в SaveDatas
-            saveDatas.Pollution = selectMethods.GetPollution(saveDatas.Dates, _model, PointID);
+            saveDatas.Dates = [.. list]; // сохранили выбранный массив дат за сезон в SaveDatas
+            saveDatas.Pollution = SelectMethods.GetPollution(saveDatas.Dates, _model, PointID);
         }
         #endregion
 
@@ -166,7 +174,7 @@ namespace BaseView.ViewModel
         public string Informations { get; set; }
         public string ResultCorrelation { get; set; }        
 
-        public Calculation calc = new Calculation();
+        public Calculation calc = new();
         public double Correlation, Slope, Intercept;
         public string NameCity { get; set; }    
         private void SelectDate()
@@ -176,14 +184,13 @@ namespace BaseView.ViewModel
             if (NumberYear.Length == 1)
             {
                 OneYearPollut(saveDatas.Dates);
-                Informations = string.Format($"Город: {NameCity}, Пост - №{PointID}, {NumberYear[0]} год");
-                //OnPropertyChanged(nameof(Informations));
+                Informations = string.Format($"Город: {NameCity}, Пост - №{PointID}, {NumberYear[0]} год");   
                 ResultCorrelations();
             }
             else if (NumberYear.Length > 1)
             {
                 string years = "";
-                SeasonYearPollut(saveDatas.Dates);
+                SeasonYearPollut();
                 int i = 0;
                 while(i != NumberYear.Length)
                 {
@@ -193,7 +200,7 @@ namespace BaseView.ViewModel
                     i++;
                 }
                 years += " год.";
-                Informations = string.Format($"Город: {NameCity}, Пост - №{PointID}\nСезон - {SelectSeason[0]} за {years}");
+                Informations = string.Format($" Город: {NameCity}, Пост - №{PointID},\nСезон - {SelectSeason[0]} за {years}");
                 ResultCorrelations();
             }
         }
@@ -205,7 +212,7 @@ namespace BaseView.ViewModel
             Slope = resultCalculate.Item2;
             Intercept = resultCalculate.Item3;
             string CorrelationEquation = string.Format("y = {0:0.##}x + {1:0.##}", Slope, Intercept);           
-            ResultCorrelation = string.Format($"Значение корреляции: {Math.Round(Correlation, 2)} \n{CorrelationEquation}");
+            ResultCorrelation = string.Format($"Значение корреляции: {Math.Round(Correlation, 2)}, {CorrelationEquation}");
             DrawingCorr();
         }
         public PlotModel PlotModel { get; set; }

@@ -22,7 +22,7 @@ namespace BaseView.Utilities
     {
         public Statistics statistics;
         public decimal[] Shtils;
-        public SaveDatas saveDatas = new SaveDatas();
+        public SaveDatas saveDatas = new();
 
         private PlotModel _plotModel;
         public PlotModel PlotModels
@@ -46,9 +46,12 @@ namespace BaseView.Utilities
                 statistics = new Statistics(DateTime.Parse($"01.01.{mas[0]}"), DateTime.Parse($"31.12.{mas[index]}"), IdStation, GetConnectionStrings(Sqlite));
             }
 
-            var avg = statistics.GetAveragesChart(Parameter.Wind_Speed, Microsoft.VisualBasic.DateInterval.Day);
+            var avg = statistics.GetWindPeriodicityChart(null, Microsoft.VisualBasic.DateInterval.Month);
+            
+;
+            var st = GetShtilsForDates(avg, mas, NumberMonth);
 
-            Shtils = GetShtilsPercent(avg, mas, NumberMonth);
+            Shtils = st.Select(value => value * 100).ToArray();
 
             if (Pollution.Length != Shtils.Length) throw new ArgumentException("Массивы должны быть одинаковой длины");
             else
@@ -72,9 +75,19 @@ namespace BaseView.Utilities
 
         public PlotModel LoadData(int[] NumberYear, decimal[] Pollution, string cityName, int pointId, string info, string rescorr)
         {
-            PlotModels = new PlotModel { Title = info, Subtitle = rescorr};
-            PlotModels.PlotAreaBorderThickness = new OxyThickness(2);
-            PlotModels.PlotAreaBorderColor = OxyColors.Gray;
+            PlotModels = new PlotModel
+            {
+                Title = info,
+                Subtitle = rescorr,
+                TitleFontSize = 30,
+                TitleFont = "Bahnschrift SemiLight",
+                TitleHorizontalAlignment = TitleHorizontalAlignment.CenteredWithinPlotArea,
+                SubtitleFontSize = 22,
+                SubtitleFont = "Bahnschrift SemiLight",
+                PlotAreaBorderThickness = new OxyThickness(2),
+                PlotAreaBorderColor = OxyColors.Gray
+                
+            };
             var series = new ScatterSeries();
 
             if (NumberYear.Length == 1)
@@ -83,7 +96,7 @@ namespace BaseView.Utilities
             }
             else series = new ScatterSeries { Title = $"Город - {cityName}, Пост - {pointId}", MarkerType = MarkerType.Circle };
 
-            List<DataPoints> dataPoints = new List<DataPoints>();
+            List<DataPoints> dataPoints = [];
 
             for (int i = 0; i < Pollution.Length; i++)
             {
@@ -116,8 +129,11 @@ namespace BaseView.Utilities
                 maxPollution = dataPoints.Max(p => p.Pollution);
                 PlotModels.Axes.Clear(); // Очистка существующих осей
 
-                PlotModels.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Повторяемость штилей, %", Minimum = minWind - 1, Maximum = maxWind + 1 });
-                PlotModels.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Концентрация нг / м^3", Minimum = minPollution - 1, Maximum = maxPollution + 1 });
+                PlotModels.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Повторяемость штилей, %", Minimum = minWind - 1, Maximum = maxWind + 1 ,
+                    TitleFont = "Bahnschrift SemiLight", TitleFontSize = 15});
+                PlotModels.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Концентрация нг / м^3", Minimum = minPollution - 1, Maximum = maxPollution + 1,
+                    TitleFont = "Bahnschrift SemiLight", TitleFontSize = 15
+                });
             }
 
             double averageX = (double)Shtils.Average();
@@ -138,9 +154,9 @@ namespace BaseView.Utilities
             PlotModels.InvalidatePlot(true);
             return PlotModels;
         }
-        private decimal[] GetShtilsPercent(Dictionary<DateTime, decimal> avg, int[] mas, int[] NumberMonth)
+        private static decimal[] GetShtilsForDates(Dictionary<DateTime, decimal> avg, int[] mas, int[] NumberMonth)
         {
-            List<(int, int)> listDate = new List<(int, int)>();
+            List<(int, int)> listDate = [];
             foreach (var year in mas)
             {
                 foreach (var month in NumberMonth)
@@ -149,23 +165,21 @@ namespace BaseView.Utilities
                 }
             }
 
-            List<decimal> CalmDaysCount = new List<decimal>();
-            List<decimal> DaysInMonth = new List<decimal>();
+            // Создаем список для хранения списков значений
+            List<List<decimal>> dates = [];
+
             foreach (var item in listDate)
             {
-                int calmDays = avg.Where(y => y.Key.Year == item.Item1).Count(x => x.Key.Month == item.Item2 && x.Value < 1);
-                DaysInMonth.Add(DateTime.DaysInMonth(item.Item1, item.Item2));
-                CalmDaysCount.Add(calmDays);
-            }
+                // Получаем значения для текущего года и месяца
+                var values = avg
+                    .Where(y => y.Key.Year == item.Item1 && y.Key.Month == item.Item2)
+                    .Select(m => m.Value)
+                    .ToList();
 
-            decimal[] days = DaysInMonth.ToArray();
-            decimal[] shtils = new decimal[CalmDaysCount.Count];
-            decimal[] calms = CalmDaysCount.ToArray();
-            for (int i = 0; i < CalmDaysCount.Count; i++)
-            {
-                shtils[i] = (calms[i] / days[i]) * 100;
+                // Добавляем список значений в dates
+                dates.Add(values);
             }
-            return shtils;
+            return dates.SelectMany(x => x).ToArray();
         }               
     }
 }

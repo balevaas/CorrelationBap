@@ -6,11 +6,14 @@
         xmlns:local="clr-namespace:BaseView" 
         xmlns:oxy="http://oxyplot.org/wpf" xmlns:datasdto="clr-namespace:BaseView.DatasDTO" xmlns:viewmodel="clr-namespace:BaseView.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:CorrelationViewModel}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="850" 
+        Title="Расчет и выявление корреляционных зависимостей" Height="800" Width="1050"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        
     </Window.Resources>
+
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.3*"/>
@@ -19,48 +22,47 @@
         <Grid Grid.Column="0">
             <Border Background="GhostWhite" BorderBrush="DimGray" BorderThickness="1">
                 <StackPanel VerticalAlignment="Top">
-                    <Label Margin="10,0,10,0" Content="Выберите город:"/>
-                    <ComboBox Margin="5,0,5,0"
+                    <Label Content="Выберите город:" Style="{StaticResource LabelInfo}"/>
+                    <ComboBox Style="{StaticResource ComboboxSel}"
                     Name="CityCB" ItemsSource="{Binding Path=StationName}"
                     SelectedItem="{Binding Path=SelectStationID, Mode=TwoWay}"
                     SelectionChanged="CityCB_SelectionChanged"/>
 
-                    <Label Name="LabelPoint" Margin="10,0,10,0" Content="Выберите ПНЗА:"/>
-                    <ComboBox Margin="5,0,5,0"
+                    <Label Name="LabelPoint" Content="Выберите ПНЗ:" Style="{StaticResource LabelInfo}"/>
+                    <ComboBox Style="{StaticResource ComboboxSel}"
                    Name="PointCB" ItemsSource="{Binding Path=Points}"
                    SelectedItem="{Binding Path=SelectPointID, Mode=TwoWay}"
                    SelectionChanged="PointCB_SelectionChanged"/>
 
-                    <Label Name="LabelYear" Margin="10,0,10,0" Content="Выберите год(а):"/>
-                    <ComboBox Margin="5,0,5,0" ItemsSource="{Binding Years}">
+                    <Label Name="LabelYear" Content="Выберите год(а):" Style="{StaticResource LabelInfo}"/>
+                    <ComboBox ItemsSource="{Binding Years}" Style="{StaticResource ComboboxSel}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <CheckBox x:Name="YearsCheckBox" Content="{Binding Year}" IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                <CheckBox Style="{StaticResource StationCheckBox}" x:Name="YearsCheckBox" Content="{Binding Year}" IsChecked="{Binding IsSelected, Mode=TwoWay}"
                                           Checked="YearsCheckBox_Checked" Unchecked="YearsCheckBox_Checked"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ComboBox>
 
                     <StackPanel x:Name="PanelMonth" Visibility="Collapsed">
-                        <Label Name="LabelMonth" Margin="10,0,10,0" Content="Выберите месяц(ы):"/>
-                        <ComboBox Margin="5,0,5,0" x:Name="MonthCB" ItemsSource="{Binding Months}" 
+                        <Label Name="LabelMonth" Content="Выберите месяц(ы):"  Style="{StaticResource LabelInfo}"/>
+                        <ComboBox x:Name="MonthCB" ItemsSource="{Binding Months}" Style="{StaticResource ComboboxSel}"
                             IsEnabled="{Binding IsMonthComboboxEnabled}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <CheckBox Content="{Binding Month}" IsChecked="{Binding IsSelected, Mode=TwoWay}"
-                                        />
+                                    <CheckBox Content="{Binding Month}" IsChecked="{Binding IsSelected, Mode=TwoWay}" Style="{StaticResource StationCheckBox}" />
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ComboBox>
 
                     </StackPanel>
                     
-                    <StackPanel Margin="10,0,10,0" x:Name="SeasonsPanel" Visibility="{Binding IsSeasonRadioButtonEnabled, Converter= {StaticResource BooleanToVisibilityConverter}}">
-                        <Label Content="Выберите сезон:"/>
-                        <ItemsControl ItemsSource="{Binding Seasons}">
+                    <StackPanel x:Name="SeasonsPanel" Visibility="{Binding IsSeasonRadioButtonEnabled, Converter= {StaticResource BooleanToVisibilityConverter}}">
+                        <Label Content="Выберите сезон:" Style="{StaticResource LabelInfo}"/>
+                        <ItemsControl ItemsSource="{Binding Seasons}" FontSize="18">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <RadioButton Content="{Binding Name}" GroupName="SeasonsGroup" IsChecked="{Binding IsSelected, Mode=TwoWay}"/>
+                                    <RadioButton Style="{StaticResource Radio}" Content="{Binding Name}" GroupName="SeasonsGroup" IsChecked="{Binding IsSelected, Mode=TwoWay}"/>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
@@ -69,21 +71,18 @@
                     
                 </StackPanel>
             </Border>
-            <Button x:Name="AnalysisBtn" VerticalAlignment="Bottom" Margin="10" Content="Выполнить анализ" Click="AnalysisBtn_Click"/>
-
-            <!--<Button x:Name="DataBaseBtn" Content="Просмотр данных" VerticalAlignment="Bottom" Margin="10"/>-->
-
+            <Button Style="{StaticResource CalculateButtons}" x:Name="AnalysisBtn" VerticalAlignment="Bottom" Margin="10" Content="Выполнить анализ" Click="AnalysisBtn_Click"/>
         </Grid>
 
         <Grid x:Name="graphGrid" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition Height="0.08*"/>
-            </Grid.RowDefinitions>       
-            
+            </Grid.RowDefinitions>
+
             <oxy:PlotView Grid.Row="0" x:Name="plotView" Margin="10" Model="{Binding PlotModel}"/>
-            <Button x:Name="SaveBtn" VerticalAlignment="Bottom" Margin="10" Content="Сохранить результат" 
-                    Grid.Row="1" HorizontalAlignment="Center" Click="SaveBtn_Click"/>
+            <Button x:Name="SaveBtn" VerticalAlignment="Bottom" Content="Сохранить результат" 
+                    Grid.Row="1" HorizontalAlignment="Center" Click="SaveBtn_Click" Style="{StaticResource CalculateButtons}"/>
         </Grid>       
     </Grid>
 </Window>

@@ -58,7 +58,7 @@ namespace BaseView
                 MessageBox.Show("Для выбранных данных график не построен");
                 return;
             }
-            else SavePlotAsPng($"{_context.NameCity},№{_context.PointID}.png");
+            else SavePlotAsPng($"{_context.NameCity}№{_context.PointID}.png");
             
         }
 
@@ -74,12 +74,10 @@ namespace BaseView
 
             if (bitmap != null)
             {
-                using (var stream = File.Create(pngFilePath))
-                {
-                    var encoder = new PngBitmapEncoder();
-                    encoder.Frames.Add(BitmapFrame.Create(bitmap));
-                    encoder.Save(stream);
-                }
+                using var stream = File.Create(pngFilePath);
+                var encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bitmap));
+                encoder.Save(stream);
             }
             else
             {

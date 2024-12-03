@@ -2,12 +2,9 @@
 
 namespace BaseData.Context
 {
-    public class DbContextFactory
+    public class DbContextFactory(DbContextOptions options)
     {
-        private readonly DbContextOptions _options;
-
-        public DbContextFactory(DbContextOptions options) =>
-            _options = options;
+        private readonly DbContextOptions _options = options;
 
         public DataContext Create()
         {

@@ -12,6 +12,6 @@ namespace BaseData.Entities
         public decimal ResultCorrelation { get; set; }
         public DateTime Year { get; set; }
 
-        public Point Point { get; set; }
+        public Point? Point { get; set; }
     }
 }

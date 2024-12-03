@@ -14,13 +14,13 @@ namespace BaseView.Utilities
 {
     public class SelectMethods : BaseViewModel
     {
-        public SaveDatas saveDatas = new SaveDatas();
-        public ObservableCollection<string> SelectStationName(DataContext _model)
+        public SaveDatas saveDatas = new();
+        public static ObservableCollection<string> SelectStationName(DataContext _model)
         {
-            ObservableCollection<string> names = new ObservableCollection<string>(_model.Stations.Select(p => p.Name));
+            ObservableCollection<string> names = new(_model.Stations.Select(p => p.Name));
             return names;
         }
-        public List<int> GetIDByStationID(int station, DataContext _model)
+        public static List<int> GetIDByStationID(int station, DataContext _model)
         {
             var ID = _model.Points
                 .Where(od => od.StationID == station)
@@ -29,30 +29,32 @@ namespace BaseView.Utilities
             return ID; // Возвращаем найденный ID            
         }
 
-        public List<YearItem> GetYears(int id, DataContext _model)
+        public static List<YearItem> GetYears(int id, DataContext _model)
         {
-            return _model.Pollutions.Where(p => p.PointID == id).Select(y => new YearItem { Year = y.Date.Year, IsSelected = false }).Distinct().ToList();
+            return [.. _model.Pollutions.Where(p => p.PointID == id).Select(y => new YearItem { Year = y.Date.Year, IsSelected = false }).Distinct()];
         }
 
-        public List<MonthItem> GetMonthNames(DataContext _model)
+        public static List<MonthItem> GetMonthNames(DataContext _model)
         {
             int[] numMonth = new ObservableCollection<int>(_model.Pollutions.Select(p => p.Date.Month).Distinct()).ToArray();
-            List<MonthItem> monthItems = new List<MonthItem>();
+            
+            List<MonthItem> monthItems = [];
             string[] names = MonthItem.MonthNames();
             for (int i = 0; i < numMonth.Length; i++)
             {
                 monthItems.Add(new MonthItem
                 {
                     Number = i + 1,
-                    Month = names[numMonth[i] - 1]
+                    Month = names[numMonth[i]- 1]
                 });
             }
+            monthItems.Add(new MonthItem { Number = 13, Month = "Весь год" });
             return monthItems;
         }
 
-        public List<SeasonItem> GetSeasonItems()
+        public static List<SeasonItem> GetSeasonItems()
         {
-            List<SeasonItem> items = new List<SeasonItem>();
+            List<SeasonItem> items = [];
             string[] names = SeasonItem.SeasonNames();
             for (int i = 0; i < names.Length; i++)
             {
@@ -64,7 +66,7 @@ namespace BaseView.Utilities
             return items;
         }
 
-        public decimal[] GetPollution(DateTime[] date, DataContext _model, int PointID)
+        public static decimal[] GetPollution(DateTime[] date, DataContext _model, int PointID)
         {
             decimal[] Pollution = new ObservableCollection<decimal>(_model.Pollutions.Where(m => date.Any(d => d.Date == m.Date)).Where(m => m.PointID == PointID).Select(m => m.Concentration)).ToArray();
             return Pollution;
@@ -91,9 +93,9 @@ namespace BaseView.Utilities
         public ObservableCollection<SeasonItem> Seasons { get; private set; }
         public (ObservableCollection<YearItem>, ObservableCollection<MonthItem>, ObservableCollection<SeasonItem>, int) SelectPoint(int pointID, DataContext _model)
         {
-            Years = new ObservableCollection<YearItem>();
-            Months = new ObservableCollection<MonthItem>();
-            Seasons = new ObservableCollection<SeasonItem>();
+            Years = [];
+            Months = [];
+            Seasons = [];
             IDPoint = new ObservableCollection<int>(_model.Points.Where(p => p.ID == pointID).Select(p => p.ID));
             PointID = IDPoint.ElementAt(0);
             foreach (var year in GetYears(PointID, _model))
