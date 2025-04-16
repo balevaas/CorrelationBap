@@ -1,15 +1,12 @@
 ﻿using BaseData.Context;
-using BaseData.Entities;
 using BaseView.DatasDTO;
 using BaseView.Utilities;
 using CommunityToolkit.Mvvm.Input;
 using MvvmHelpers;
 using MvvmHelpers.Commands;
 using OxyPlot;
-using OxyPlot.Wpf;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.IO;
 using WeatherDataParser;
 using static ConnectionConfig.Strings;
 
@@ -28,7 +25,7 @@ namespace BaseView.ViewModel
         public CorrelationViewModel(DataContext model)
         {
             _model = model;
-            parcer = new Parser(DateTime.Parse("01.01.2019"),GetConnectionStrings(Sqlite));
+            parcer = new Parser(DateTime.Parse("01.01.2020"),GetConnectionStrings(Sqlite));
             StationID = new ObservableCollection<int>(_model.Stations.Select(i => i.ID)).ToArray();
             for(int i = 0; i < StationID.Length; i++)
             {

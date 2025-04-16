@@ -4,11 +4,6 @@ using OxyPlot.Series;
 using OxyPlot;
 using WeatherDataParser;
 using static ConnectionConfig.Strings;
-using OxyPlot.Annotations;
-using OxyPlot.Wpf;
-using System.IO;
-using System.Text;
-using System.Windows.Media.Imaging;
 
 namespace BaseView.Utilities
 {

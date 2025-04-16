@@ -40,9 +40,10 @@ namespace BaseData
                 {
                     var entity = new Pollution
                     {
-                        Date = DateTime.Parse(columnData[0][i]),
-                        PointID = int.Parse(columnData[1][i]),
-                        Concentration = decimal.Parse(columnData[2][i])
+                        ID = int.Parse(columnData[0][i]),
+                        Date = DateTime.Parse(columnData[1][i]),
+                        PointID = int.Parse(columnData[2][i]),
+                        Concentration = decimal.Parse(columnData[3][i])
                     };
                     entities.Add(entity);
                 }
